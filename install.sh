@@ -29,7 +29,7 @@ link $DOTFILES/.tmux.conf ~/.tmux.conf
 link $DOTFILES/.zshrc ~/.zshrc
 mkdir -p ~/.config/cheat/cheatsheets
 link $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
-link $DOTFILES/cheatsheets/work ~/.config/cheat/cheatsheets/work
+mkdir -p ~/.config/cheat/cheatsheets/work
 
 echo "→ Downloading community cheatsheets..."
 if [ ! -d ~/.config/cheat/cheatsheets/community ]; then
