@@ -1,0 +1,110 @@
+---
+tags: [ lazygit, git ]
+syntax: bash
+---
+
+# open lazygit from neovim
+Space gg
+
+# toggle stage / unstage selected file
+Space
+
+# toggle stage / unstage all files
+a
+
+# commit staged changes
+c
+
+# amend last commit
+A
+
+# discard changes to selected file
+d
+
+# open file in editor
+e
+
+# stage individual lines / hunks in file
+Enter
+
+# stash all changes
+s
+
+# view stash options
+S
+
+# fetch from remote
+f
+
+# push current branch
+P
+
+# pull current branch
+p
+
+# undo last git action
+z
+
+# redo
+Ctrl-z
+
+# refresh git state
+R
+
+# show keybinds for current panel
+?
+
+# quit lazygit
+q
+
+# previous / next tab
+[ / ]
+
+# checkout selected branch
+Space
+
+# new branch
+n
+
+# checkout branch by name
+c
+
+# checkout previous branch
+-
+
+# delete branch
+d
+
+# rebase current branch onto selected
+r
+
+# merge selected branch into current
+M
+
+# reword commit message
+r
+
+# drop commit
+d
+
+# squash commit into one below
+s
+
+# fixup commit squash discard message
+f
+
+# reset soft mixed hard
+g
+
+# view files changed in commit
+Enter
+
+# apply stash keep it
+Space
+
+# pop stash apply and remove
+g
+
+# drop stash entry
+d
+

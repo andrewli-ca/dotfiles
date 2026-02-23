@@ -1,0 +1,188 @@
+---
+tags: [ neovim, editor ]
+syntax: bash
+---
+
+# horizontal split stacked
+Ctrl-w s
+
+# vertical split side by side
+Ctrl-w v
+
+# horizontal split and open file
+:sp filename
+
+# vertical split and open file
+:vs filename
+
+# equalize all split sizes
+Ctrl-w =
+
+# maximize current split height
+Ctrl-w _
+
+# maximize current split width
+Ctrl-w |
+
+# move split to edge
+Ctrl-w H/J/K/L
+
+# close current split
+:q
+
+# close all splits except current
+:only
+
+# move left neovim split or tmux pane
+Ctrl-h
+
+# move down neovim split or tmux pane
+Ctrl-j
+
+# move up neovim split or tmux pane
+Ctrl-k
+
+# move right neovim split or tmux pane
+Ctrl-l
+
+# cycle through splits
+Ctrl-w w
+
+# find files by filename telescope
+Space Space / Space ff
+
+# delete current buffer
+Space bd
+
+# delete buffer and window
+Space bD
+
+# delete all other buffers
+Space bo
+
+# previous / next buffer
+[b / ]b
+
+# close current tab
+:tabc
+
+# close all tabs except current
+:tabo
+
+# next / previous tab
+gt / gT
+
+# jump to tab 3
+3gt
+
+# quit neovim entirely
+:qa
+
+# toggle neo-tree file explorer
+Space e
+
+# create new file in neo-tree
+a
+
+# open or create a file
+:e filename.ts
+
+# create file in same dir as current file
+:e %:h/newfile.ts
+
+# search in current file forward
+/pattern
+
+# search in current file backward
+?pattern
+
+# next / previous match
+n / N
+
+# search word under cursor forward
+*
+
+# search word under cursor backward
+#
+
+# jump to next occurrence of char on line
+f{char}
+
+# jump to prev occurrence of char on line
+F{char}
+
+# repeat last f or F jump
+;
+
+# jump to just before char on line
+t{char}
+
+# fuzzy search current buffer only telescope
+Space sb
+
+# live grep across entire project telescope
+Space / or Space sg
+
+# search lsp symbols in current file
+Space ss
+
+# send telescope results to quickfix list
+Ctrl-q
+
+# go to definition
+gd
+
+# go to references
+gr
+
+# hover docs
+K
+
+# code actions
+Space ca
+
+# rename symbol
+Space cr
+
+# jump between diagnostics
+[d / ]d
+
+# change inner word
+ciw
+
+# change inside quotes
+ci"
+
+# change inside parens
+ci(
+
+# visual line select
+V
+
+# toggle comment line
+gcc
+
+# undo
+u
+
+# redo
+Ctrl-r
+
+# copy entire file contents to system clipboard
+gg"+yG
+
+# yank selection to system clipboard (normal or visual)
+Space y
+
+# yank line to system clipboard
+Space Y
+
+# paste from system clipboard after cursor (normal or visual)
+Space p
+
+# paste from system clipboard before cursor (normal or visual)
+Space P
+
+# open lazygit
+Space gg
+

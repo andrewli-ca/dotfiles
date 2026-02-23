@@ -1,0 +1,38 @@
+---
+tags: [ cheat, cli ]
+syntax: bash
+---
+
+# view a cheatsheet
+cheat tmux
+
+# search across all cheatsheets
+cheat -s "keyword"
+
+# search personal cheatsheets only
+cheat -s "keyword" -p personal
+
+# search community cheatsheets only
+cheat -s "keyword" -p community
+
+# search within a single cheatsheet
+cheat tmux | grep -A 1 "keyword"
+
+# list all available cheatsheets
+cheat -l
+
+# list personal cheatsheets only
+cheat -l -p personal
+
+# edit a cheatsheet
+cheat -e tmux
+
+# create a new cheatsheet
+cheat -e newsheet
+
+# show cheatsheet directories
+cheat -d
+
+# show cheat version
+cheat --version
+

@@ -1,0 +1,122 @@
+---
+tags: [ gemini, ai, cli ]
+syntax: bash
+---
+
+# start interactive session
+gemini
+
+# single prompt (non-interactive)
+gemini -p "explain this codebase"
+
+# start session with initial prompt then stay interactive
+gemini -i "summarize this repo"
+
+# use a specific model
+gemini -m gemini-2.5-pro
+
+# pipe input
+echo "what does this do?" | gemini
+
+# auto-approve all tool calls (yolo mode)
+gemini --yolo
+
+# run tools in sandbox (requires Docker/Podman)
+gemini --sandbox
+
+# save file snapshots before modifications
+gemini --checkpointing
+
+# enable debug output
+gemini --debug
+
+# include a file in your prompt
+> explain this @./src/main.go
+
+# include an image in your prompt
+> describe this image @./screenshot.png
+
+# include a whole directory (git-aware, respects .gitignore)
+> refactor this to use async/await @./src/
+
+# run a shell command from within gemini
+> !git status
+
+# toggle persistent shell mode (type ! again to exit)
+> !
+
+# show help
+/help
+
+# clear screen and context
+/clear
+
+# copy last response to clipboard
+/copy
+
+# compress chat context to a summary (saves tokens)
+/compress
+
+# show token usage for the session
+/stats
+
+# save conversation with a tag
+/chat save my-session
+
+# resume a saved conversation
+/chat resume my-session
+
+# list saved conversations
+/chat list
+
+# show memory loaded from GEMINI.md files
+/memory show
+
+# reload GEMINI.md memory files
+/memory refresh
+
+# generate a starter GEMINI.md in current directory
+/init
+
+# list configured MCP servers and tools
+/mcp
+
+# list available built-in tools
+/tools
+
+# list active extensions
+/extensions
+
+# manage multi-directory workspace
+/directory
+
+# restore project files to state before last tool call
+/restore
+
+# switch authentication method
+/auth
+
+# change visual theme
+/theme
+
+# toggle vim keybindings for input
+/vim
+
+# show version info
+/about
+
+# report a bug
+/bug
+
+# exit
+/quit
+
+# keyboard shortcuts
+# Ctrl+L    clear screen
+# Ctrl+V    paste text/image from clipboard
+# Ctrl+Y    toggle yolo mode
+# Ctrl+X    open prompt in external editor
+
+# GEMINI.md: place in project root or ~/.gemini/ for persistent memory/instructions
+# Built-in tools: read_file, write_file, replace, glob, list_directory,
+#   run_shell_command, google_web_search, web_fetch, save_memory

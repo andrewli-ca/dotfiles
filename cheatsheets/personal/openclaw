@@ -1,0 +1,702 @@
+---
+tags: [ openclaw, ai, cli, gateway ]
+syntax: bash
+---
+
+# --- SETUP & CONFIGURATION ---
+
+# initialize config and workspace
+openclaw setup
+
+# run setup with a custom workspace path and step-by-step wizard
+openclaw setup --workspace ~/myworkspace --wizard
+
+# interactive onboarding wizard (first-run experience)
+openclaw onboard
+
+# restart onboarding from scratch
+openclaw onboard --reset
+
+# run onboarding non-interactively (e.g. in scripts) with specific mode and flow
+openclaw onboard --non-interactive --mode local --flow quickstart
+
+# interactive config wizard (models, channels, skills)
+openclaw configure
+
+# read a config value at a dot-path (e.g. "agent.model")
+openclaw config get <path>
+
+# write a config value
+openclaw config set <path> <value>
+
+# delete a config value, reverting to default
+openclaw config unset <path>
+
+# run health checks and print what's wrong
+openclaw doctor
+
+# run deep health checks and auto-fix issues without prompting
+openclaw doctor --deep --yes
+
+
+# --- CHANNEL MANAGEMENT ---
+
+# list all configured channels (whatsapp, telegram, slack, etc.)
+openclaw channels list
+
+# show runtime status of all channels (connected/disconnected)
+openclaw channels status
+
+# probe each channel with a live connection test
+openclaw channels status --probe
+
+# tail logs for all channels
+openclaw channels logs
+
+# tail logs for a specific channel with a line limit
+openclaw channels logs --channel whatsapp --lines 50
+
+# interactively add a new channel
+openclaw channels add
+
+# remove a channel by name (keeps data)
+openclaw channels remove --channel telegram
+
+# remove a channel and delete all associated data
+openclaw channels remove --channel telegram --delete
+
+# start a channel session (e.g. scan WhatsApp QR code)
+openclaw channels login --channel whatsapp
+
+# end the active session for a channel
+openclaw channels logout --channel whatsapp
+
+# show your own identity/profile on a channel
+openclaw directory self --channel <name>
+
+# list all contacts/peers on a channel
+openclaw directory peers list --channel <name>
+
+# search contacts by name/term with a result limit
+openclaw directory peers list --channel <name> --query <term> --limit <n>
+
+# list all groups on a channel
+openclaw directory groups list --channel <name>
+
+# search groups by name
+openclaw directory groups list --channel <name> --query <term>
+
+# list members of a specific group
+openclaw directory groups members --channel <name> --group-id <id>
+
+
+# --- SKILLS & PLUGINS ---
+
+# list all available skills and their status
+openclaw skills list
+
+# show details for a specific skill (description, config, requirements)
+openclaw skills info <name>
+
+# check if skill requirements (tools, creds, etc.) are met
+openclaw skills check
+
+# show only skills you're eligible to use, with verbose output
+openclaw skills check --eligible --verbose
+
+# list installed plugins
+openclaw plugins list
+
+# show details for a plugin by id
+openclaw plugins info <id>
+
+# install a plugin from a local path, .tgz file, or npm package spec
+openclaw plugins install <path|.tgz|npm-spec>
+
+# enable a previously disabled plugin
+openclaw plugins enable <id>
+
+# disable a plugin without uninstalling it
+openclaw plugins disable <id>
+
+# run plugin health checks
+openclaw plugins doctor
+
+# list all hooks and their status
+openclaw hooks list
+
+# show only hooks you're eligible to run, with verbose output
+openclaw hooks list --eligible --verbose
+
+# show details for a specific hook
+openclaw hooks info <name>
+
+# check if hook requirements are satisfied
+openclaw hooks check
+
+# enable a hook by name
+openclaw hooks enable <name>
+
+# disable a hook without removing it
+openclaw hooks disable <name>
+
+# install a hook from a local path, .tgz, or npm package
+openclaw hooks install <path|.tgz|npm-spec>
+
+# install a hook as a symlink (useful for local development)
+openclaw hooks install <path> --link
+
+# update a specific hook to its latest version
+openclaw hooks update <id>
+
+# preview updates for all hooks without applying them
+openclaw hooks update --all --dry-run
+
+# list pending DM pairing requests on a channel
+openclaw pairing list <channel>
+
+# approve a pairing request by code
+openclaw pairing approve <channel> <code>
+
+# approve and notify the requester
+openclaw pairing approve <channel> <code> --notify
+
+
+# --- MESSAGING & AGENTS ---
+
+# interactively compose and send a message via a channel
+openclaw message send
+
+# poll for new incoming messages
+openclaw message poll
+
+# add an emoji reaction to a message
+openclaw message react
+
+# create a new message thread
+openclaw message thread create
+
+# list existing threads
+openclaw message thread list
+
+# reply within a thread
+openclaw message thread reply
+
+# list available emoji for reactions
+openclaw message emoji list
+
+# send a sticker
+openclaw message sticker send
+
+# check status of a voice call by call ID
+openclaw voicecall status --call-id <id>
+
+# initiate an outbound voice call with a spoken message
+openclaw voicecall call --to <number> --message <text> --mode <type>
+
+# send a follow-up message in an ongoing call
+openclaw voicecall continue --call-id <id> --message <text>
+
+# hang up / end an active call
+openclaw voicecall end --call-id <id>
+
+# expose voice call endpoint via local server
+openclaw voicecall expose --mode serve
+
+# expose voice call endpoint via tunnel (e.g. ngrok-style)
+openclaw voicecall expose --mode funnel
+
+# remove the voice call exposure/tunnel
+openclaw voicecall unexpose
+
+# run one agent turn: send a message to a destination
+openclaw agent --message "hello" --to <dest>
+
+# run an agent turn in a specific session and deliver the response
+openclaw agent --message "hello" --session-id <id> --deliver
+
+# run an agent turn with medium thinking budget and full verbose output
+openclaw agent --message "hello" --thinking medium --verbose full
+
+# list all configured agents
+openclaw agents list
+
+# list agents as JSON and include channel bindings
+openclaw agents list --json --bindings
+
+# create an isolated agent with a custom workspace and model
+openclaw agents add myagent --workspace ~/ws --model gpt-4o
+
+# create an agent bound to a specific channel account
+openclaw agents add myagent --bind whatsapp:accountId
+
+# delete an agent by id
+openclaw agents delete <id>
+
+# delete an agent without confirmation prompt
+openclaw agents delete <id> --force
+
+
+# --- SANDBOX ---
+
+# explain the active sandbox mode, scope, and policy
+openclaw sandbox explain
+
+# explain sandbox config for a specific session, as JSON
+openclaw sandbox explain --session <key> --json
+
+# explain sandbox config for a specific agent
+openclaw sandbox explain --agent <id>
+
+# list all active sandbox containers
+openclaw sandbox list
+
+# list sandbox containers including browser sandboxes, as JSON
+openclaw sandbox list --browser --json
+
+# recreate all sandbox containers (picks up updated images/config)
+openclaw sandbox recreate --all
+
+# recreate the sandbox container for a specific session
+openclaw sandbox recreate --session <key>
+
+# force-recreate the sandbox for a specific agent
+openclaw sandbox recreate --agent <id> --force
+
+# recreate only the browser sandbox container
+openclaw sandbox recreate --browser
+
+
+# --- MONITORING & STATUS ---
+
+# show current session health summary
+openclaw status
+
+# full status: all sessions, deep checks, usage stats, JSON output
+openclaw status --all --deep --usage --json
+
+# check gateway health
+openclaw health
+
+# check gateway health with details and a custom timeout (ms)
+openclaw health --verbose --timeout 5000
+
+# open the web control UI dashboard in your default browser
+openclaw dashboard
+
+# print the dashboard URL without opening a browser
+openclaw dashboard --no-open
+
+# list all stored conversation sessions
+openclaw sessions
+
+# list sessions active in the last 30 days, as JSON
+openclaw sessions --active 30 --json
+
+# print recent gateway logs
+openclaw logs
+
+# stream gateway logs in real time
+openclaw logs --follow
+
+# print last 100 log lines as JSON
+openclaw logs --limit 100 --json
+
+
+# --- MODELS & AUTH ---
+
+# list all models available to you
+openclaw models list
+
+# list all models including unavailable ones, filtered by provider
+openclaw models list --all --provider anthropic
+
+# list locally available/offline models
+openclaw models list --local
+
+# show auth status for all model providers
+openclaw models status
+
+# probe each provider with a live API test
+openclaw models status --probe
+
+# set the default text model
+openclaw models set claude-opus-4-6
+
+# set the default image generation model
+openclaw models set-image dall-e-3
+
+# interactively add a new auth credential (API key, OAuth, etc.)
+openclaw models auth add
+
+# generate and save a new auth token interactively
+openclaw models auth setup-token
+
+# paste a token directly from clipboard
+openclaw models auth paste-token
+
+# show the current auth provider resolution order
+openclaw models auth order get
+
+# interactively reorder auth providers
+openclaw models auth order set
+
+# reset auth provider order to default
+openclaw models auth order clear
+
+# list model name aliases
+openclaw models aliases list
+
+# add a model alias
+openclaw models aliases add
+
+# remove a model alias
+openclaw models aliases remove
+
+# list model fallback chains
+openclaw models fallbacks list
+
+# add a fallback model for a given model
+openclaw models fallbacks add
+
+# clear all fallback chains
+openclaw models fallbacks clear
+
+# scan for locally available models (e.g. Ollama)
+openclaw models scan
+
+
+# --- GATEWAY MANAGEMENT ---
+
+# run the gateway process in the foreground on a port, bound to loopback
+openclaw gateway --port 18789 --bind loopback
+
+# run gateway bound to tailscale network with serve enabled
+openclaw gateway --bind tailnet --tailscale serve
+
+# show gateway service status
+openclaw gateway status
+
+# show gateway status with deep diagnostics
+openclaw gateway status --deep
+
+# install gateway as a background system service using bun runtime
+openclaw gateway install --runtime bun
+
+# remove the gateway system service
+openclaw gateway uninstall
+
+# start the installed gateway service
+openclaw gateway start
+
+# stop the gateway service
+openclaw gateway stop
+
+# restart the gateway service
+openclaw gateway restart
+
+# check gateway health endpoint
+openclaw gateway health
+
+# probe gateway with a live connectivity test
+openclaw gateway probe
+
+# call a raw gateway RPC method with JSON params
+openclaw gateway call <method> --params '{"key":"value"}'
+
+
+# --- SYSTEM & AUTOMATION ---
+
+# send an immediate system event (triggers agent)
+openclaw system event --text "reminder" --mode now
+
+# queue a system event for the next heartbeat cycle
+openclaw system event --text "reminder" --mode next-heartbeat
+
+# show when the last heartbeat occurred
+openclaw system heartbeat last
+
+# enable periodic heartbeat events
+openclaw system heartbeat enable
+
+# disable heartbeat events
+openclaw system heartbeat disable
+
+# show current system presence state (active/idle/away)
+openclaw system presence
+
+# show status of the cron job scheduler
+openclaw cron status
+
+# list all configured scheduled jobs
+openclaw cron list
+
+# add a job that runs every hour
+openclaw cron add --name myjob --every 1h
+
+# add a job with a custom cron expression (weekdays at 9am)
+openclaw cron add --name myjob --cron "0 9 * * 1-5"
+
+# edit a cron job interactively
+openclaw cron edit <id>
+
+# delete a cron job
+openclaw cron rm <id>
+
+# enable a disabled cron job
+openclaw cron enable <id>
+
+# disable a cron job without deleting it
+openclaw cron disable <id>
+
+# show run history for a cron job
+openclaw cron runs --id <id>
+
+# configure Gmail push webhook (for email-triggered agents)
+openclaw webhooks gmail setup --account me@gmail.com
+
+# run the Gmail webhook listener
+openclaw webhooks gmail run
+
+
+# --- NODE & DEVICE MANAGEMENT ---
+
+# connect this machine as a headless remote node to a gateway
+openclaw node run --host <gateway-host> --port 18789
+
+# show status of this machine's node registration
+openclaw node status
+
+# install node as a background system service
+openclaw node install
+
+# stop the local node service
+openclaw node stop
+
+# restart the local node service
+openclaw node restart
+
+# show status of all paired remote nodes
+openclaw nodes status
+
+# list all paired nodes
+openclaw nodes list
+
+# show detailed info for a node (by id, name, or IP)
+openclaw nodes describe --node <id|name|ip>
+
+# run a command on a remote node via RPC
+openclaw nodes invoke --node <id> --command <cmd>
+
+# run a shell command on a remote node and stream output
+openclaw nodes run --node <id> <command>
+
+# take a snapshot photo from a remote node's camera
+openclaw nodes camera snap
+
+# record a short video clip from a remote node's camera
+openclaw nodes camera clip
+
+# take a screenshot of a remote node's canvas/display
+openclaw nodes canvas snapshot
+
+# start a screen recording on a remote node
+openclaw nodes screen record
+
+# get the GPS/location of a remote node
+openclaw nodes location get
+
+# list registered devices and their pairing status
+openclaw devices list
+
+# approve a pending device pairing request by request ID
+openclaw devices approve <requestId>
+
+# approve the most recent pending device pairing request
+openclaw devices approve --latest
+
+# reject a pairing request
+openclaw devices reject <requestId>
+
+# rotate the auth token for a device/role combination
+openclaw devices rotate --device <id> --role <role>
+
+# rotate token with a specific scope
+openclaw devices rotate --device <id> --role <role> --scope <scope>
+
+# revoke a device's token for a given role
+openclaw devices revoke --device <id> --role <role>
+
+
+# --- BROWSER AUTOMATION ---
+
+# show status of the managed browser instance
+openclaw browser status
+
+# launch the managed browser
+openclaw browser start
+
+# stop the managed browser
+openclaw browser stop
+
+# wipe the browser profile (cookies, local storage, etc.)
+openclaw browser reset-profile
+
+# list all open browser tabs
+openclaw browser tabs
+
+# open a URL in the managed browser
+openclaw browser open <url>
+
+# take a screenshot of the current page
+openclaw browser screenshot
+
+# take a screenshot of a specific target/tab by ID
+openclaw browser screenshot <targetId>
+
+# capture an accessibility snapshot (DOM tree for agent use)
+openclaw browser snapshot
+
+# navigate the browser to a URL
+openclaw browser navigate <url>
+
+# click an element by accessibility ref
+openclaw browser click <ref>
+
+# type text into an element by ref
+openclaw browser type <ref> "text to type"
+
+# press a keyboard key (e.g. Enter, Tab)
+openclaw browser press <key>
+
+# hover over an element by ref
+openclaw browser hover <ref>
+
+# fill multiple form fields at once with a JSON map
+openclaw browser fill --fields '{"name":"value"}'
+
+# wait for a number of milliseconds
+openclaw browser wait --time 2000
+
+# wait until specific text appears on the page
+openclaw browser wait --text "Page loaded"
+
+# accept a browser dialog (alert/confirm/prompt)
+openclaw browser dialog --accept
+
+# dismiss a browser dialog
+openclaw browser dialog --dismiss
+
+# list available browser profiles
+openclaw browser profiles
+
+# export the current page as a PDF
+openclaw browser pdf
+
+
+# --- UTILITY ---
+
+# show status of the vector memory index
+openclaw memory status
+
+# rebuild/update the vector index over memory files
+openclaw memory index
+
+# semantic search over indexed memory
+openclaw memory search "what did I do last week"
+
+# open the terminal UI (interactive chat/status)
+openclaw tui
+
+# open TUI for a specific session
+openclaw tui --session <key>
+
+# open TUI with a pre-filled message
+openclaw tui --message "hello"
+
+# start the ACP bridge for IDE connectivity (e.g. VS Code extension)
+openclaw acp
+
+# open interactive documentation browser
+openclaw docs
+
+# search documentation for a topic
+openclaw docs "how do i set up telegram"
+
+# configure DNS for wide-area node discovery
+openclaw dns setup
+
+# configure DNS and apply changes immediately
+openclaw dns setup --apply
+
+# run a security audit on config and credentials
+openclaw security audit
+
+# run a deep audit and auto-fix issues
+openclaw security audit --deep --fix
+
+# show the current exec approval policy (local)
+openclaw approvals get
+
+# show the exec approval policy on the gateway
+openclaw approvals get --gateway
+
+# show the exec approval policy on a remote node
+openclaw approvals get --node <id|name|ip>
+
+# upload and apply an approval policy from a file (local)
+openclaw approvals set --file <path>
+
+# apply an approval policy on the gateway
+openclaw approvals set --gateway --file <path>
+
+# apply an approval policy on a remote node
+openclaw approvals set --node <id|name|ip> --file <path>
+
+# add a glob pattern to the exec allowlist
+openclaw approvals allowlist add <pattern>
+
+# remove a glob pattern from the exec allowlist
+openclaw approvals allowlist remove <pattern>
+
+
+# --- RESET & UNINSTALL ---
+
+# reset only config files (keeps credentials and sessions)
+openclaw reset --scope config
+
+# reset config, credentials, and sessions
+openclaw reset --scope "config+creds+sessions"
+
+# preview a full reset without making any changes
+openclaw reset --scope full --yes --dry-run
+
+# uninstall the gateway service only
+openclaw uninstall --service
+
+# fully uninstall everything without confirmation prompts
+openclaw uninstall --all --yes
+
+# update the CLI to the latest version
+openclaw update
+
+
+# --- GLOBAL FLAGS ---
+
+# use dev config under ~/.openclaw-dev (for testing)
+openclaw --dev <command>
+
+# use a named profile config (for multi-account setups)
+openclaw --profile <name> <command>
+
+# output results as JSON (machine-readable)
+openclaw --json <command>
+
+# output results as plain text (no formatting)
+openclaw --plain <command>
+
+# disable ANSI color output
+openclaw --no-color <command>
+
+# print the installed CLI version
+openclaw --version

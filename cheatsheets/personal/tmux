@@ -1,0 +1,113 @@
+---
+tags: [ tmux, terminal ]
+syntax: bash
+---
+
+# create named session (from terminal)
+tmux new -s myapp
+
+# reattach to a session
+tmux attach -t myapp
+
+# list all sessions
+tmux ls
+
+# create new session from inside tmux
+Ctrl-a : new -s myapp
+
+# detach from session (keeps it running)
+Ctrl-a d
+
+# interactive session list (navigate with j/k)
+Ctrl-a s
+
+# previous / next session
+Ctrl-a ( / )
+
+# rename current session
+Ctrl-a $
+
+# kill current session
+Ctrl-a : kill-session
+
+# create new window
+Ctrl-a c
+
+# rename current window
+Ctrl-a ,
+
+# jump to window by number
+Ctrl-a 1-9
+
+# next / previous window
+Ctrl-a n / p
+
+# kill current window
+Ctrl-a &
+
+# kill window 3
+Ctrl-a : kill-window -t 3
+
+# split vertically (side by side) in CWD
+Ctrl-a |
+
+# split horizontally (top/bottom) in CWD
+Ctrl-a -
+
+# kill current pane with confirmation
+Ctrl-a x
+
+# close pane instantly
+Ctrl-d
+
+# flash pane numbers
+Ctrl-a q
+
+# zoom/unzoom current pane fullscreen toggle
+Ctrl-a z
+
+# break pane into its own new window
+Ctrl-a !
+
+# swap pane with previous / next
+Ctrl-a { / }
+
+# cycle through preset layouts
+Ctrl-a Space
+
+# all panes side by side
+Ctrl-a : select-layout even-horizontal
+
+# all panes stacked
+Ctrl-a : select-layout even-vertical
+
+# swap pane 1 with pane 2
+Ctrl-a : swap-pane -s 1 -t 2
+
+# move pane into window 2 side by side
+Ctrl-a : join-pane -h -t :2
+
+# move pane into window 2 stacked
+Ctrl-a : join-pane -v -t :2
+
+# resize pane in 5-cell increments
+Ctrl-a Alt-up/down/left/right
+
+# resize pane in 1-cell increments
+Ctrl-a Ctrl-up/down/left/right
+
+# enter copy mode
+Ctrl-a [
+
+# start selection in copy mode
+v
+
+# yank to clipboard and exit copy mode
+y
+
+# exit copy mode
+q
+
+# reload tmux config
+Ctrl-a r
+

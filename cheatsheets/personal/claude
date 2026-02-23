@@ -1,0 +1,180 @@
+---
+tags: [ claude, ai, cli ]
+syntax: bash
+---
+
+# start interactive session
+claude
+
+# single prompt (non-interactive, print and exit)
+claude -p "explain this codebase"
+
+# pipe input
+cat file.txt | claude -p "summarize this"
+
+# continue most recent conversation
+claude -c
+
+# resume a specific session (interactive picker)
+claude --resume
+
+# use a specific model
+claude --model claude-opus-4-6
+claude --model claude-sonnet-4-6
+claude --model claude-haiku-4-5-20251001
+
+# add extra working directories
+claude --add-dir ../lib ../shared
+
+# skip all permission prompts (use with caution)
+claude --dangerously-skip-permissions
+
+# restrict tools Claude can use
+claude --allowedTools "Bash(git log *)" "Read" "Grep"
+claude --disallowedTools "Bash"
+
+# override/append system prompt
+claude --system-prompt "You are a Python expert"
+claude --append-system-prompt "Always write tests"
+
+# get JSON output (useful in scripts)
+claude -p "list todos" --output-format json
+claude -p "query" --output-format stream-json
+
+# limit agentic turns (non-interactive)
+claude -p "refactor auth module" --max-turns 5
+
+# verbose output (shows tool calls and steps)
+claude --verbose
+
+# enable debug output
+claude --debug
+
+# show version
+claude --version
+
+# check Claude Code health
+claude doctor
+
+# MCP server management
+claude mcp list
+claude mcp add --transport stdio myserver -- npx -y @myorg/mcp-server
+claude mcp add --transport http myserver https://api.example.com/mcp
+claude mcp add --transport http --header "Authorization: Bearer token" myserver https://...
+claude mcp remove myserver
+claude mcp get myserver
+
+# use Claude as an MCP server
+claude mcp serve
+
+# --- SLASH COMMANDS (inside interactive session) ---
+
+# show all available commands
+/help
+
+# clear screen and conversation context
+/clear
+
+# compact/summarize conversation to save tokens
+/compact
+/compact "focus on the auth refactor"
+
+# show token usage and costs
+/cost
+
+# run health check
+/doctor
+
+# generate a starter CLAUDE.md in current directory
+/init
+
+# manage CLAUDE.md memory files
+/memory
+
+# list configured MCP servers and tools
+/mcp
+
+# open settings
+/config
+
+# manage permissions
+/permissions
+
+# change visual theme
+/theme
+
+# toggle vim keybindings for input
+/vim
+
+# show PR comments (requires gh CLI)
+/pr_comments
+
+# exit
+/quit
+
+# --- IN-SESSION PROMPT SYNTAX ---
+
+# include a file in your prompt
+> explain this @./src/main.go
+
+# include a whole directory (respects .gitignore)
+> refactor this @./src/
+
+# include an image
+> what's in this image @./screenshot.png
+
+# include an MCP resource
+> @servername:protocol://resource/path
+
+# run a shell command directly
+> !git status
+
+# --- KEYBOARD SHORTCUTS ---
+
+# Ctrl+C       cancel current generation or input
+# Ctrl+D       exit Claude Code
+# Ctrl+L       clear screen (keeps context)
+# Shift+Tab    cycle permission modes: Normal → Auto-accept → Plan
+# Ctrl+R       reverse search prompt history
+# Ctrl+V       paste image from clipboard
+# Ctrl+G       open prompt in external editor ($EDITOR)
+# Escape       cancel current input
+# Esc Esc      rewind last message
+
+# multiline input (depends on terminal):
+# Option+Enter  (macOS default)
+# Shift+Enter   (iTerm2, WezTerm, Ghostty, Kitty)
+# Ctrl+J        (other terminals)
+# \ + Enter     (universal fallback)
+
+# --- CLAUDE.MD MEMORY SYSTEM ---
+
+# CLAUDE.md files loaded in priority order:
+# ~/.claude/CLAUDE.md          global (all projects)
+# ./CLAUDE.md                  project root
+# ./.claude/CLAUDE.md          project (alternative)
+# ./CLAUDE.local.md            local overrides (add to .gitignore)
+# ./.claude/rules/*.md         modular rule files
+
+# import another file inside CLAUDE.md:
+# @path/to/other-file.md
+
+# auto memory per project (loaded each session):
+# ~/.claude/projects/<project-hash>/memory/MEMORY.md
+
+# --- COMMON WORKFLOWS ---
+
+# understand a new codebase
+claude "give me an architectural overview of this project"
+
+# fix a bug and continue interactively
+claude -c "the login returns 401, investigate and fix"
+
+# pipe a file for quick analysis
+cat error.log | claude -p "what's causing these errors?"
+
+# non-interactive script usage with JSON output
+claude -p "extract all TODO comments" --output-format json --dangerously-skip-permissions
+
+# run in plan-only mode (review before any edits)
+# use Shift+Tab to enter Plan mode from Normal mode
