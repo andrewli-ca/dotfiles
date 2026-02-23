@@ -69,4 +69,10 @@ if ! command -v cheat &> /dev/null; then
   fi
 fi
 
+echo "→ Reloading tmux config (if running)..."
+if tmux info &>/dev/null 2>&1; then
+  tmux source-file ~/.tmux.conf
+  echo "  tmux config reloaded"
+fi
+
 echo "✓ Done! Open tmux and press prefix + I to install plugins."
