@@ -19,6 +19,9 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 fi
 
 echo "→ Installing Zsh plugins..."
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+fi
 if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
@@ -29,13 +32,13 @@ fi
 echo "→ Backing up existing configs..."
 BACKUP="$HOME/.dotfiles-backup-$(date +%Y%m%d%H%M%S)"
 mkdir -p "$BACKUP"
-for f in ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.config/cheat/conf.yml \
+for f in ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml \
           ~/.config/cheat/cheatsheets/personal; do
   [ -e "$f" ] && cp -rL "$f" "$BACKUP/" && echo "  backed up $f"
 done
 
 echo "→ Cleaning up old configs..."
-rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.config/cheat/conf.yml \
+rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml \
        ~/.config/cheat/cheatsheets/personal
 
 echo "→ Linking configs..."
@@ -44,6 +47,7 @@ mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets
 link $DOTFILES/nvim ~/.config/nvim
 link $DOTFILES/.tmux.conf ~/.tmux.conf
 link $DOTFILES/.zshrc ~/.zshrc
+link $DOTFILES/.p10k.zsh ~/.p10k.zsh
 link $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
 mkdir -p ~/.config/cheat/cheatsheets/work
 
