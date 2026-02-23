@@ -2,6 +2,12 @@
 set -e
 DOTFILES="$HOME/.dotfiles"
 
+# Safely create a symlink, removing any existing symlink at the destination first
+link() {
+  [ -L "$2" ] && rm "$2"
+  ln -sf "$1" "$2"
+}
+
 echo "→ Installing Oh My Zsh (if not present)..."
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -18,16 +24,12 @@ fi
 echo "→ Linking configs..."
 mkdir -p ~/.config ~/.config/cheat
 
-ln -sf $DOTFILES/nvim ~/.config/nvim
-ln -sf $DOTFILES/.tmux.conf ~/.tmux.conf
-ln -sf $DOTFILES/.zshrc ~/.zshrc
-# Remove old whole-dir symlink if present (migration from older setup)
-if [ -L ~/.config/cheat/cheatsheets ]; then
-  rm ~/.config/cheat/cheatsheets
-fi
+link $DOTFILES/nvim ~/.config/nvim
+link $DOTFILES/.tmux.conf ~/.tmux.conf
+link $DOTFILES/.zshrc ~/.zshrc
 mkdir -p ~/.config/cheat/cheatsheets
-ln -sf $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
-ln -sf $DOTFILES/cheatsheets/work ~/.config/cheat/cheatsheets/work
+link $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
+link $DOTFILES/cheatsheets/work ~/.config/cheat/cheatsheets/work
 
 echo "→ Downloading community cheatsheets..."
 if [ ! -d ~/.config/cheat/cheatsheets/community ]; then
