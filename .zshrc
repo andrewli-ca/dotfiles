@@ -165,5 +165,4 @@ export PATH="$HOME/.local/bin:$PATH"
 # opencode
 export PATH=/Users/andrew/.opencode/bin:$PATH
 alias dotfiles='/usr/bin/git --git-dir=/Users/andrew/.dotfiles/ --work-tree=/Users/andrew'
-alias dotfiles='/usr/bin/git --git-dir=/Users/andrew/.dotfiles/ --work-tree=/Users/andrew'
 export PATH="$HOME/.local/bin:$PATH"
