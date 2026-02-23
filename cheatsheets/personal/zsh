@@ -1,0 +1,155 @@
+---
+tags: [ zsh, omz, oh-my-zsh, git, z, autosuggestions ]
+syntax: bash
+---
+
+# ── AUTOSUGGESTIONS ──────────────────────────────────────────────────────────
+
+# accept the full autosuggestion
+→  (right arrow)
+
+# accept one word of the autosuggestion
+Ctrl+→
+
+# ── Z - DIRECTORY JUMPING ────────────────────────────────────────────────────
+
+# jump to most-frecent directory matching pattern
+z app
+
+# list all directories matching pattern with scores
+z -l docs
+
+# jump to the highest-ranked match
+z proj
+
+# remove a directory from z's database
+z -x /old/path
+
+# ── ZSH LINE EDITOR (ZLE) ────────────────────────────────────────────────────
+
+# prepend sudo to the current/previous command
+ESC ESC
+
+# move to beginning / end of line
+Ctrl+A / Ctrl+E
+
+# move back / forward one word
+Alt+B / Alt+F
+
+# delete word before cursor
+Ctrl+W
+
+# clear screen, keep current command
+Ctrl+L
+
+# ── UTILITIES (oh-my-zsh plugins) ────────────────────────────────────────────
+
+# extract any archive (.zip, .tar.gz, .tgz, .bz2, etc.)
+extract file.tar.gz
+
+# show what process is listening on a port
+port 3000
+
+# ── GIT ALIASES (oh-my-zsh git plugin) ──────────────────────────────────────
+
+# --- status & diffs ---
+
+# git status
+gst
+
+# git diff (unstaged)
+gd
+
+# git diff --staged
+gds
+
+# pretty git log graph
+glog
+
+# --- staging & committing ---
+
+# git add --all
+gaa
+
+# git add -p (interactive hunk staging)
+gapa
+
+# git commit -m "message"
+gcmsg "message"
+
+# git commit -am "message" (stage tracked files + commit)
+gcam "message"
+
+# git commit --amend (reword or add to last commit)
+gc!
+
+# --- branches ---
+
+# git branch (list local)
+gb
+
+# git checkout <branch>
+gco main
+
+# git checkout -b <new-branch>
+gcb feature/name
+
+# git branch -d <branch> (safe delete)
+gbd branch-name
+
+# git branch -D <branch> (force delete)
+gbD branch-name
+
+# --- push & pull ---
+
+# git push origin <current-branch>
+ggpush
+
+# git pull origin <current-branch>
+ggpull
+
+# git pull (default remote/branch)
+gl
+
+# git push (default remote/branch)
+gp
+
+# git push --force-with-lease (safe force push)
+gpf
+
+# --- stash ---
+
+# git stash push
+gsta
+
+# git stash pop
+gstp
+
+# git stash list
+gstl
+
+# git stash drop
+gstd
+
+# --- rebase & merge ---
+
+# git rebase -i HEAD~n (interactive rebase)
+grbi HEAD~3
+
+# git rebase --continue
+grbc
+
+# git rebase --abort
+grba
+
+# git merge <branch>
+gm branch-name
+
+# --- remote & fetch ---
+
+# git fetch --all --prune
+gfa
+
+# git remote -v (list remotes)
+grv
+

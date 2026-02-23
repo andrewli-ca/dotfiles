@@ -1,0 +1,50 @@
+---
+tags: [ fzf, cli, search ]
+syntax: bash
+---
+
+# search command history and paste selection
+Ctrl+R
+
+# search files in current tree and paste path
+Ctrl+T
+
+# cd into a directory (fuzzy search)
+Alt+C
+
+# fuzzy complete files for any command (e.g. vim **<Tab>)
+**<Tab>
+
+# fuzzy complete directories (e.g. cd **<Tab>)
+cd **<Tab>
+
+# fuzzy complete process IDs (e.g. kill **<Tab>)
+kill **<Tab>
+
+# fuzzy complete hostnames (e.g. ssh **<Tab>)
+ssh **<Tab>
+
+# search within fzf results
+/
+
+# toggle preview pane (if configured)
+?
+
+# select multiple results
+Tab
+
+# deselect a result
+Shift+Tab
+
+# accept selected result
+Enter
+
+# abort / exit fzf
+Ctrl+C / Escape
+
+# move up/down in results
+Ctrl+P / Ctrl+N
+
+# scroll preview pane up/down
+Ctrl+U / Ctrl+D
+
