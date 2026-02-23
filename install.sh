@@ -8,7 +8,18 @@ mkdir -p ~/.config ~/.config/cheat
 ln -sf $DOTFILES/nvim ~/.config/nvim
 ln -sf $DOTFILES/.tmux.conf ~/.tmux.conf
 ln -sf $DOTFILES/.zshrc ~/.zshrc
-ln -sf $DOTFILES/cheatsheets ~/.config/cheat/cheatsheets
+# Remove old whole-dir symlink if present (migration from older setup)
+if [ -L ~/.config/cheat/cheatsheets ]; then
+  rm ~/.config/cheat/cheatsheets
+fi
+mkdir -p ~/.config/cheat/cheatsheets
+ln -sf $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
+ln -sf $DOTFILES/cheatsheets/work ~/.config/cheat/cheatsheets/work
+
+echo "→ Downloading community cheatsheets..."
+if [ ! -d ~/.config/cheat/cheatsheets/community ]; then
+  git clone https://github.com/cheat/cheatsheets ~/.config/cheat/cheatsheets/community
+fi
 
 echo "→ Templating cheat config for current user..."
 sed "s|/Users/andrew|$HOME|g" $DOTFILES/cheat-conf.yml > ~/.config/cheat/conf.yml
