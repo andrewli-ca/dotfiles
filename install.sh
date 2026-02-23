@@ -2,9 +2,14 @@
 set -e
 DOTFILES="$HOME/.dotfiles"
 
-# Safely create a symlink, removing any existing symlink at the destination first
+# Safely create a symlink — removes existing symlinks, backs up real files/dirs
 link() {
-  [ -L "$2" ] && rm "$2"
+  if [ -L "$2" ]; then
+    rm "$2"
+  elif [ -e "$2" ]; then
+    mv "$2" "$2.bak"
+    echo "  backed up $2 → $2.bak"
+  fi
   ln -sf "$1" "$2"
 }
 
@@ -21,13 +26,24 @@ if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlightin
   git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
+echo "→ Backing up existing configs..."
+BACKUP="$HOME/.dotfiles-backup-$(date +%Y%m%d%H%M%S)"
+mkdir -p "$BACKUP"
+for f in ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.config/cheat/conf.yml \
+          ~/.config/cheat/cheatsheets/personal; do
+  [ -e "$f" ] && cp -rL "$f" "$BACKUP/" && echo "  backed up $f"
+done
+
+echo "→ Cleaning up old configs..."
+rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.config/cheat/conf.yml \
+       ~/.config/cheat/cheatsheets/personal
+
 echo "→ Linking configs..."
-mkdir -p ~/.config ~/.config/cheat
+mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets
 
 link $DOTFILES/nvim ~/.config/nvim
 link $DOTFILES/.tmux.conf ~/.tmux.conf
 link $DOTFILES/.zshrc ~/.zshrc
-mkdir -p ~/.config/cheat/cheatsheets
 link $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
 mkdir -p ~/.config/cheat/cheatsheets/work
 
