@@ -47,7 +47,8 @@ This will:
 - Clone community cheatsheets
 - Template the cheat config with your home directory path
 - Install TPM (tmux plugin manager) if not present
-- Install `cheat` CLI if not present
+- Install CLI tools via Homebrew: `neovim`, `tmux`, `lazygit`, `ripgrep`, `fd`, `fzf`, `cheat`
+- Set up fzf shell bindings (`~/.fzf.zsh`)
 - Reload tmux config if tmux is running
 
 ### 3. Finish plugin setup

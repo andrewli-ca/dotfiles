@@ -64,13 +64,29 @@ if [ ! -d ~/.tmux/plugins/tpm ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-echo "→ Installing cheat CLI (if not present)..."
-if ! command -v cheat &> /dev/null; then
-  if command -v brew &> /dev/null; then
-    brew install cheat
-  else
-    echo "⚠ cheat not found — install manually: https://github.com/cheat/cheat"
+echo "→ Installing CLI tools via Homebrew..."
+if command -v brew &> /dev/null; then
+  brew_install() {
+    local cmd="$1" pkg="${2:-$1}"
+    if ! command -v "$cmd" &> /dev/null; then
+      echo "  installing $pkg..."
+      brew install "$pkg"
+    fi
+  }
+  brew_install nvim neovim
+  brew_install tmux
+  brew_install lazygit
+  brew_install rg ripgrep
+  brew_install fd
+  brew_install fzf
+  # Install fzf shell bindings (key bindings + completion) non-interactively
+  if [ ! -f ~/.fzf.zsh ]; then
+    "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish
   fi
+  brew_install cheat
+else
+  echo "⚠ Homebrew not found — install missing tools manually:"
+  echo "  neovim, tmux, lazygit, ripgrep, fd, fzf, cheat"
 fi
 
 echo "→ Reloading tmux config (if running)..."
