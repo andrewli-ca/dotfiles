@@ -48,63 +48,6 @@ Ctrl-a &
 # kill window 3
 Ctrl-a : kill-window -t 3
 
-# split vertically (side by side) in CWD
-Ctrl-a |
-
-# split horizontally (top/bottom) in CWD
-Ctrl-a -
-
-# kill current pane with confirmation
-Ctrl-a x
-
-# close pane instantly
-Ctrl-d
-
-# flash pane numbers
-Ctrl-a q
-
-# move to left / down / up / right pane
-Ctrl-h / j / k / l
-
-# zoom/unzoom current pane fullscreen toggle
-Ctrl-a z
-
-# break pane into its own new window
-Ctrl-a !
-
-# swap pane with previous / next
-Ctrl-a { / }
-
-# cycle through preset layouts
-Ctrl-a Space
-
-# all panes side by side
-Ctrl-a : select-layout even-horizontal
-
-# all panes stacked
-Ctrl-a : select-layout even-vertical
-
-# swap pane 1 with pane 2
-Ctrl-a : swap-pane -s 1 -t 2
-
-# move (push) pane into window 2 side by side
-Ctrl-a : join-pane -h -t :2
-
-# move (push) pane into window 2 stacked
-Ctrl-a : join-pane -v -t :2
-
-# pull pane from window 2 into current side by side
-Ctrl-a : join-pane -h -s :2
-
-# pull pane from window 2 into current stacked
-Ctrl-a : join-pane -v -s :2
-
-# resize pane in 5-cell increments
-Ctrl-a Alt-up/down/left/right
-
-# resize pane in 1-cell increments
-Ctrl-a Ctrl-up/down/left/right
-
 # enter copy mode
 Ctrl-a [
 

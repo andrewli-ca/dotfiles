@@ -1,0 +1,110 @@
+---
+tags: [ tmux, terminal, panes ]
+syntax: bash
+---
+
+# --- Creating & Closing ---
+
+# split vertically (side by side) in CWD
+Ctrl-a |
+
+# split horizontally (top/bottom) in CWD
+Ctrl-a -
+
+# kill current pane with confirmation
+Ctrl-a x
+
+# close pane instantly (sends EOF)
+Ctrl-d
+
+# --- Navigating ---
+
+# move to left / down / up / right pane
+Ctrl-h / j / k / l
+
+# flash pane numbers then press number to jump
+Ctrl-a q
+
+# go to last active pane
+Ctrl-a ;
+
+# --- Resizing ---
+
+# resize pane in 5-cell increments
+Ctrl-a Alt-up/down/left/right
+
+# resize pane in 1-cell increments
+Ctrl-a Ctrl-up/down/left/right
+
+# toggle zoom current pane fullscreen
+Ctrl-a z
+
+# --- Swapping & Reordering ---
+
+# swap pane with previous / next
+Ctrl-a { / }
+
+# swap pane 1 with pane 2
+Ctrl-a : swap-pane -s 1 -t 2
+
+# rotate panes forward in current window
+Ctrl-a : rotate-window
+
+# --- Layouts ---
+
+# cycle through preset layouts
+Ctrl-a Space
+
+# all panes side by side
+Ctrl-a : select-layout even-horizontal
+
+# all panes stacked
+Ctrl-a : select-layout even-vertical
+
+# main pane left, others stacked right
+Ctrl-a : select-layout main-vertical
+
+# main pane top, others side by side below
+Ctrl-a : select-layout main-horizontal
+
+# tiled (equal grid)
+Ctrl-a : select-layout tiled
+
+# --- Moving Panes Between Windows ---
+
+# break pane into its own new window
+Ctrl-a !
+
+# move (push) pane into window 2 side by side
+Ctrl-a : join-pane -h -t :2
+
+# move (push) pane into window 2 stacked
+Ctrl-a : join-pane -v -t :2
+
+# pull pane from window 2 into current side by side
+Ctrl-a : join-pane -h -s :2
+
+# pull pane from window 2 into current stacked
+Ctrl-a : join-pane -v -s :2
+
+# --- Marking & Targeting ---
+
+# mark/unmark current pane (for use with -t '{marked}')
+Ctrl-a m
+
+# join marked pane into current window
+Ctrl-a : join-pane -s '{marked}'
+
+# --- Misc ---
+
+# show pane numbers and sizes
+Ctrl-a q
+
+# display pane info (index, tty, size)
+Ctrl-a : display-message -p '#{pane_index} #{pane_tty} #{pane_width}x#{pane_height}'
+
+# pipe pane output to a log file
+Ctrl-a : pipe-pane -o 'cat >> ~/pane.log'
+
+# stop piping
+Ctrl-a : pipe-pane

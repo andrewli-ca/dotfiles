@@ -186,3 +186,29 @@ Space P
 # open lazygit
 Space gg
 
+# --- Spell Check ---
+
+# jump to next misspelled word
+]s
+
+# jump to previous misspelled word
+[s
+
+# add word to dictionary (permanent)
+zg
+
+# undo add to dictionary
+zug
+
+# ignore word for this session only
+zG
+
+# mark word as wrong
+zw
+
+# show spelling suggestions
+z=
+
+# toggle spell check on/off
+Space us
+
