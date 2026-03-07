@@ -10,6 +10,7 @@ Personal configuration files for nvim, tmux, zsh, and cheat.
 | `.tmux.conf` | tmux config with TPM plugins, cross-platform clipboard |
 | `.zshrc` | Zsh config with Oh My Zsh, Powerlevel10k, and plugins |
 | `.p10k.zsh` | Powerlevel10k prompt config |
+| `ghostty/` | Ghostty terminal config |
 | `cheat-conf.yml` | cheat CLI config |
 | `cheatsheets/personal/` | Personal cheatsheets (synced) |
 | `Brewfile` | All Homebrew dependencies |
@@ -42,7 +43,7 @@ cd ~/.dotfiles
 This will:
 - Back up any existing configs to `~/.dotfiles-backup-<timestamp>`
 - Install Oh My Zsh (if not present)
-- Symlink all configs to their correct locations
+- Symlink all configs to their correct locations (nvim, tmux, zsh, ghostty, cheat)
 - Clone community cheatsheets
 - Template the cheat config with your home directory path
 - Install TPM (tmux plugin manager) if not present

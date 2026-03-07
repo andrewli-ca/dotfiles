@@ -32,13 +32,14 @@ rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml
        ~/.config/cheat/cheatsheets/personal
 
 echo "→ Linking configs..."
-mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets
+mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets ~/.config/ghostty
 
 link $DOTFILES/nvim ~/.config/nvim
 link $DOTFILES/.tmux.conf ~/.tmux.conf
 link $DOTFILES/.zshrc ~/.zshrc
 link $DOTFILES/.p10k.zsh ~/.p10k.zsh
 link $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
+link $DOTFILES/ghostty/config ~/.config/ghostty/config
 mkdir -p ~/.config/cheat/cheatsheets/work
 
 echo "→ Downloading community cheatsheets..."

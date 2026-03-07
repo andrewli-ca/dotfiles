@@ -22,6 +22,9 @@ Ctrl-d
 # move to left / down / up / right pane
 Ctrl-h / j / k / l
 
+# cycle through panes (forward by index)
+Ctrl-a o
+
 # flash pane numbers then press number to jump
 Ctrl-a q
 
@@ -30,7 +33,10 @@ Ctrl-a ;
 
 # --- Resizing ---
 
-# resize pane in 5-cell increments
+# resize pane in 5-cell increments (vim keys, no prefix)
+Alt-h / j / k / l
+
+# resize pane in 5-cell increments (arrow keys)
 Ctrl-a Alt-up/down/left/right
 
 # resize pane in 1-cell increments
@@ -41,7 +47,7 @@ Ctrl-a z
 
 # --- Swapping & Reordering ---
 
-# swap pane with previous / next
+# swap pane with previous / next (by index)
 Ctrl-a { / }
 
 # swap pane 1 with pane 2
@@ -71,6 +77,12 @@ Ctrl-a : select-layout main-horizontal
 Ctrl-a : select-layout tiled
 
 # --- Moving Panes Between Windows ---
+
+# send current pane to another window (stacked)
+Ctrl-a @
+
+# send current pane to another window (side by side)
+Ctrl-a #
 
 # break pane into its own new window
 Ctrl-a !
