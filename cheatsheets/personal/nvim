@@ -48,8 +48,14 @@ Ctrl-l
 # cycle through splits
 Ctrl-w w
 
-# find files by filename telescope
-Space Space / Space ff
+# find files by filename telescope (cwd)
+Space Space
+
+# find files by filename telescope (cwd, include hidden files)
+1 Space Space
+
+# find files by filename telescope (git project root)
+Space fP
 
 # delete current buffer
 Space bd
@@ -211,4 +217,3 @@ z=
 
 # toggle spell check on/off
 Space us
-
