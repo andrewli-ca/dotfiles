@@ -177,3 +177,15 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$(brew --prefix sqlite-rsync)/bin:$PATH"
 
 alias sync-podcat-db='sqlite3_rsync carl@macmini:/Users/carl/.local/share/sumtool/sumtool.db ~/sumtool.db'
+
+# OpenClaw Completion
+source "/Users/carl/.openclaw/completions/openclaw.zsh"
+source <(sumtool completion zsh 2>/dev/null)
+source <(podcat completion zsh 2>/dev/null)
+
+alias rst="make -C ~/.local/share/tools restart-podcat"
+
+# Service restart shortcuts
+alias restart-podcat='launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.podcat-watch.plist 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.podcat-watch.plist; launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.podcat-web.plist 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.podcat-web.plist; echo "podcat restarted"'
+alias restart-sumtool='launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.sumtool-web.plist 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.sumtool-web.plist; echo "sumtool restarted"'
+alias restart-all-services='restart-podcat && restart-sumtool'

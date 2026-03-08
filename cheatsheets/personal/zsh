@@ -165,3 +165,17 @@ gfa
 # git remote -v (list remotes)
 grv
 
+# ── LOCAL SERVICES ───────────────────────────────────────────────────────────
+
+# restart podcat (watch + web)
+restart-podcat
+
+# restart sumtool
+restart-sumtool
+
+# restart all services at once
+restart-all-services
+
+# check service status
+launchctl list | grep -E "sumtool|podcat"
+
