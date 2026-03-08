@@ -104,28 +104,6 @@ git-recent() {
   git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)' | head -10
 }
 
-# Universal extract function (if not using extract plugin)
-extract() {
-  if [ -f $1 ]; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1     ;;
-      *.tar.gz)    tar xzf $1     ;;
-      *.bz2)       bunzip2 $1     ;;
-      *.rar)       unrar e $1     ;;
-      *.gz)        gunzip $1      ;;
-      *.tar)       tar xf $1      ;;
-      *.tbz2)      tar xjf $1     ;;
-      *.tgz)       tar xzf $1     ;;
-      *.zip)       unzip $1       ;;
-      *.Z)         uncompress $1  ;;
-      *.7z)        7z x $1        ;;
-      *)           echo "'$1' cannot be extracted" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
-
 
 # User configuration
 
@@ -162,30 +140,5 @@ extract() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="$HOME/.local/bin:$PATH"
 
-# opencode
-export PATH=/Users/andrew/.opencode/bin:$PATH
-# Mac Mini port forwarding tunnels
-fwd-openclaw() { ssh -N -L 18789:127.0.0.1:18789 macmini & }
-fwd-sumtool()  { ssh -N -L 8484:127.0.0.1:8484 macmini & }
-fwd-podcat()   { ssh -N -L 5173:127.0.0.1:5173 macmini & }
-unfwd-openclaw() { kill $(lsof -ti:18789) 2>/dev/null; }
-unfwd-sumtool()  { kill $(lsof -ti:8484) 2>/dev/null; }
-unfwd-podcat()   { kill $(lsof -ti:5173) 2>/dev/null; }
-
-alias dotfiles='/usr/bin/git --git-dir=/Users/andrew/.dotfiles/ --work-tree=/Users/andrew'
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$(brew --prefix sqlite-rsync)/bin:$PATH"
-
-alias sync-podcat-db='sqlite3_rsync carl@macmini:/Users/carl/.local/share/sumtool/sumtool.db ~/sumtool.db'
-
-# OpenClaw Completion
-source "/Users/carl/.openclaw/completions/openclaw.zsh"
-source <(sumtool completion zsh 2>/dev/null)
-source <(podcat completion zsh 2>/dev/null)
-
-alias rst="make -C ~/.local/share/tools restart-podcat"
-
-# Service restart shortcuts
-alias restart-podcat='launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.podcat-watch.plist 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.podcat-watch.plist; launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.podcat-web.plist 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.podcat-web.plist; echo "podcat restarted"'
-alias restart-sumtool='launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.sumtool-web.plist 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.carlglues.sumtool-web.plist; echo "sumtool restarted"'
-alias restart-all-services='restart-podcat && restart-sumtool'
+# Machine-specific config (not tracked in dotfiles)
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
