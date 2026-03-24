@@ -82,7 +82,6 @@ plugins=(
   z
   sudo
   extract
-  command-not-found
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
@@ -142,3 +141,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Machine-specific config (not tracked in dotfiles)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# OpenClaw Completion
+source "/Users/carl/.openclaw/completions/openclaw.zsh"
