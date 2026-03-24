@@ -7,3 +7,16 @@ vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipbo
 vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', { desc = "Paste from system clipboard (after)" })
 vim.keymap.set({ "n", "v" }, "<leader>P", '"+P', { desc = "Paste from system clipboard (before)" })
+
+-- Copy path/file info
+vim.keymap.set("n", "<leader>yp", function()
+  vim.fn.setreg("+", vim.fn.expand("%:p:."))
+end, { desc = "Copy file path" })
+
+vim.keymap.set("n", "<leader>yd", function()
+  vim.fn.setreg("+", vim.fn.expand("%:h"))
+end, { desc = "Copy directory path" })
+
+vim.keymap.set("n", "<leader>yf", function()
+  vim.fn.setreg("+", vim.fn.expand("%:t:r"))
+end, { desc = "Copy file name" })

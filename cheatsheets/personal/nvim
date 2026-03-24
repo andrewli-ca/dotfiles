@@ -189,6 +189,15 @@ Space p
 # paste from system clipboard before cursor (normal or visual)
 Space P
 
+# copy relative file path to clipboard
+Space yp
+
+# copy directory path to clipboard
+Space yd
+
+# copy file name (without extension) to clipboard
+Space yf
+
 # open lazygit
 Space gg
 

@@ -61,20 +61,20 @@ Ctrl-a : rotate-window
 # cycle through preset layouts
 Ctrl-a Space
 
-# all panes side by side
-Ctrl-a : select-layout even-horizontal
+# all panes side by side (even-horizontal)
+Ctrl-a Alt-1
 
-# all panes stacked
-Ctrl-a : select-layout even-vertical
+# all panes stacked (even-vertical)
+Ctrl-a Alt-2
 
-# main pane left, others stacked right
-Ctrl-a : select-layout main-vertical
+# main pane top, others side by side below (main-horizontal)
+Ctrl-a Alt-3
 
-# main pane top, others side by side below
-Ctrl-a : select-layout main-horizontal
+# main pane left, others stacked right (main-vertical)
+Ctrl-a Alt-4
 
 # tiled (equal grid)
-Ctrl-a : select-layout tiled
+Ctrl-a Alt-5
 
 # --- Moving Panes Between Windows ---
 
@@ -104,8 +104,11 @@ Ctrl-a : join-pane -v -s :2
 # mark/unmark current pane (for use with -t '{marked}')
 Ctrl-a m
 
-# join marked pane into current window
-Ctrl-a : join-pane -s '{marked}'
+# pull marked pane into current window (stacked)
+Ctrl-a V
+
+# pull marked pane into current window (side by side)
+Ctrl-a H
 
 # --- Misc ---
 
