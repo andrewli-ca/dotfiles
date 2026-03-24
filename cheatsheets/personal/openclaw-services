@@ -1,0 +1,26 @@
+---
+tags: [ openclaw, dashboard, rex, podcat, radar, service ]
+syntax: bash
+---
+
+# OpenClaw Services — ~/.openclaw/scripts/services.sh
+# Manages: rex (3100), radar (3200), podcat (8484)
+
+# show status of all services
+~/.openclaw/scripts/services.sh status
+
+# start/stop/restart a specific service
+~/.openclaw/scripts/services.sh start rex
+~/.openclaw/scripts/services.sh stop podcat
+~/.openclaw/scripts/services.sh restart radar
+
+# start/stop/restart all services
+~/.openclaw/scripts/services.sh start all
+~/.openclaw/scripts/services.sh stop all
+~/.openclaw/scripts/services.sh restart all
+
+# rebuild a Next.js dashboard without restarting
+~/.openclaw/scripts/services.sh build rex
+
+# tail logs for a service
+~/.openclaw/scripts/services.sh logs rex
