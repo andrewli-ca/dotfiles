@@ -22,7 +22,7 @@ return {
       {
         "<leader>fP",
         function()
-          local root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+          local root = LazyVim.root.git() or LazyVim.root() or vim.fn.getcwd()
           require("telescope.builtin").find_files({ cwd = root })
         end,
         desc = "Find Files (project root)",

@@ -1,1 +1,22 @@
+# JetBrainsMono Nerd Font for LazyVim (CLI-generated)
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 14
+
+# Style fallbacks (Ghostty auto-handles if variant missing)
+font-family-bold = "JetBrainsMono Nerd Font Mono"
+font-family-italic = "JetBrainsMono Nerd Font Mono"
+font-family-bold-italic = "JetBrainsMono Nerd Font Mono"
+
+# Ligatures ON by default - enable specific features if needed
+# font-feature = "liga,ss01"  # Uncomment for custom (e.g. != ===)
+
+# Padding & theme for dev comfort
+window-padding-x = 16
+window-padding-y = 16
+theme = catppuccin-mocha
+
+# Copy on select (handy for React/TypeScript snippets)
+copy-on-select = true
+
+# Make Option key send Alt/Meta (needed for tmux Alt-h/j/k/l resize)
 macos-option-as-alt = true
