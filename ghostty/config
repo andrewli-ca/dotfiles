@@ -20,3 +20,4 @@ copy-on-select = true
 
 # Make Option key send Alt/Meta (needed for tmux Alt-h/j/k/l resize)
 macos-option-as-alt = true
+shell-integration-features = ssh-env
