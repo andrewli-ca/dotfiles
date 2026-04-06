@@ -13,7 +13,7 @@ font-family-bold-italic = "JetBrainsMono Nerd Font Mono"
 # Padding & theme for dev comfort
 window-padding-x = 16
 window-padding-y = 16
-theme = catppuccin-mocha
+theme = Catppuccin Mocha 
 
 # Copy on select (handy for React/TypeScript snippets)
 copy-on-select = true
