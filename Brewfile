@@ -3,6 +3,7 @@ brew "neovim"
 
 # Terminal
 brew "tmux"
+brew "cormacrelf/tap/dark-notify"
 
 # Shell
 brew "fzf"
