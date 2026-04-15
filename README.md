@@ -102,7 +102,7 @@ When a CLI tool (e.g. Claude Code) outputs "print this in ANSI color 7", tmux pa
 |------|-------|------|---------|
 | Ghostty | Catppuccin Latte Custom | Catppuccin Mocha | Catppuccin |
 | tmux | `tmux-themes/light.conf` | `tmux-themes/dark.conf` | Catppuccin |
-| Neovim | Tokyo Night "day" | Tokyo Night "night" | Tokyo Night |
+| Neovim | Kanso Pearl | Kanso Zen | Kanso |
 
 ### Switching mechanism
 
@@ -110,7 +110,7 @@ All three detect macOS appearance independently:
 
 - **Ghostty** — native `light:X,dark:Y` theme syntax; switches live, no restart
 - **tmux** — the `tmux-dark-notify` plugin watches for appearance changes and sources the matching theme file from `tmux-themes/`; `.tmux.conf` also has inline fallback colors for when the plugin hasn't loaded yet
-- **Neovim** — `colorscheme.lua` runs `defaults read -g AppleInterfaceStyle` at startup to pick the style; requires restarting nvim to switch
+- **Neovim** — `colorscheme.lua` picks the initial style via `defaults read -g AppleInterfaceStyle`, then `auto-dark-mode.nvim` polls for appearance changes and swaps between `kanso-pearl` and `kanso-zen` live
 
 ### File locations
 
@@ -121,14 +121,14 @@ ghostty/config                          # points to light:/dark: themes
 tmux-themes/
   light.conf                            # Catppuccin Latte for tmux chrome
   dark.conf                             # Catppuccin Mocha for tmux chrome
-nvim/lua/plugins/colorscheme.lua        # Tokyo Night with appearance detection
+nvim/lua/plugins/colorscheme.lua        # Kanso with live appearance detection
 ```
 
 ### Customizing
 
 - **Ghostty ANSI palette**: edit `~/.config/ghostty/themes/Catppuccin Latte Custom`. Changes apply to new tabs/windows.
 - **tmux chrome** (status bar, borders): edit `tmux-themes/light.conf` or `dark.conf`. Reload with `prefix + R`.
-- **Neovim**: edit `nvim/lua/plugins/colorscheme.lua`. Restart nvim to apply.
+- **Neovim**: edit `nvim/lua/plugins/colorscheme.lua`. Restart nvim to apply.  Appearance changes after startup are handled live by `auto-dark-mode.nvim`.
 
 ## Ongoing workflow
 
