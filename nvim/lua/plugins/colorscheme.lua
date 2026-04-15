@@ -8,6 +8,8 @@ local function is_macos_dark()
   return result:match("Dark") ~= nil
 end
 
+local manual_override = false
+
 local function apply(mode)
   if mode == "dark" then
     vim.o.background = "dark"
@@ -17,6 +19,18 @@ local function apply(mode)
     vim.cmd.colorscheme("kanso-pearl")
   end
 end
+
+vim.keymap.set("n", "<leader>uT", function()
+  manual_override = true
+  apply(vim.o.background == "dark" and "light" or "dark")
+  vim.notify("Theme override: " .. vim.o.background .. " (auto-switch paused)")
+end, { desc = "Toggle theme (kanso light/dark)" })
+
+vim.api.nvim_create_user_command("ThemeAuto", function()
+  manual_override = false
+  apply(is_macos_dark() and "dark" or "light")
+  vim.notify("Theme auto-switch resumed")
+end, { desc = "Resume macOS-based theme auto-switching" })
 
 return {
   {
@@ -34,10 +48,14 @@ return {
     opts = {
       update_interval = 1000,
       set_dark_mode = function()
-        apply("dark")
+        if not manual_override then
+          apply("dark")
+        end
       end,
       set_light_mode = function()
-        apply("light")
+        if not manual_override then
+          apply("light")
+        end
       end,
     },
   },
