@@ -226,3 +226,12 @@ z=
 
 # toggle spell check on/off
 Space us
+
+# toggle theme kanso light/dark (pauses macOS auto-switch)
+Space uT
+
+# resume macOS-based theme auto-switching
+:ThemeAuto
+
+# colorscheme picker (preview any installed theme)
+Space uC
