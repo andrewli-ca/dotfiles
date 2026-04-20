@@ -84,7 +84,7 @@ Searched and viewed with `fzf` + `ripgrep` + `glow` via three shell functions de
 | `note <filename>` | Create or open a note by filename (tab-completes) |
 | `ne` | Re-open the last note from `notes` in nvim (at the same line) |
 
-Full workflow documentation: [notes/README.md](https://github.com/andrewli-ca/notes#readme)
+Full workflow documentation: [docs/notes.md](docs/notes.md)
 
 ### Setup on a new machine
 
