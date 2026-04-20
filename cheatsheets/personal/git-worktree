@@ -1,0 +1,55 @@
+---
+tags: [ git, worktree ]
+syntax: bash
+---
+
+# create a worktree for an existing branch
+git worktree add ../myproject-hotfix hotfix/login-bug
+
+# create a worktree with a new branch off main
+git worktree add -b feature/search ../myproject-search main
+
+# create a detached worktree at a specific commit
+git worktree add --detach ../myproject-old abc1234
+
+# list all worktrees
+git worktree list
+
+# remove a worktree when done
+git worktree remove ../myproject-hotfix
+
+# force-remove a worktree with uncommitted changes
+git worktree remove --force ../myproject-search
+
+# move a worktree to a new path
+git worktree move ../myproject-search ../archive/myproject-search
+
+# prune stale worktree metadata
+git worktree prune -v
+
+# lock a worktree so it isn't pruned
+git worktree lock ../myproject-experiment --reason "on external SSD"
+
+# unlock a worktree
+git worktree unlock ../myproject-experiment
+
+# update feature branch with latest dev (run from feature worktree)
+git fetch origin
+git rebase origin/dev
+
+# after resolving conflicts during rebase
+git add <fixed-files>
+git rebase --continue
+
+# force-push feature branch after rebase
+git push --force-with-lease
+
+# update another worktree without cd-ing into it
+git fetch origin
+git -C ../myproject-feature-a rebase origin/dev
+
+# rebase multiple feature worktrees onto latest dev
+git fetch origin
+for wt in ../myproject-feature-a ../myproject-feature-b ../myproject-feature-c; do
+  git -C "$wt" rebase origin/dev
+done
