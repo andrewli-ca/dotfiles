@@ -103,6 +103,65 @@ git-recent() {
   git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)' | head -10
 }
 
+# Pick a glow style based on current macOS appearance
+_glow_style() {
+  if defaults read -g AppleInterfaceStyle 2>/dev/null | grep -qi dark; then
+    echo "tokyo-night"
+  else
+    echo "light"
+  fi
+}
+
+# Search notes. Enter = read in glow. Ctrl-E = edit in nvim at matched line.
+notes() {
+  local style=$(_glow_style)
+  local out key file line
+  out=$(rg --line-number --no-heading . ~/notes \
+    | fzf --delimiter=: \
+          --preview "glow -s $style {1}" \
+          --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down' \
+          --expect=ctrl-e \
+          --header="enter: read · ctrl-e: edit · ctrl-u/ctrl-d: scroll preview")
+  [[ -z "$out" ]] && return
+  key=$(echo "$out" | head -1)
+  file=$(echo "$out" | sed -n '2p' | cut -d: -f1)
+  line=$(echo "$out" | sed -n '2p' | cut -d: -f2)
+  [[ -z "$file" ]] && return
+  NOTES_LAST="$file"
+  NOTES_LAST_LINE="$line"
+  if [[ "$key" == "ctrl-e" ]]; then
+    nvim "+$line" "$file"
+  else
+    glow -s "$style" -p "$file"
+  fi
+}
+
+# Edit the last note you opened with `notes` (jump to the matched line)
+ne() {
+  if [[ -z "$NOTES_LAST" ]]; then
+    echo "no recent note — run 'notes' first"
+    return 1
+  fi
+  nvim "+$NOTES_LAST_LINE" "$NOTES_LAST"
+}
+
+# Shortcut: search and jump straight to edit (skips the chooser)
+notes-edit() {
+  local style=$(_glow_style)
+  local result file line
+  result=$(rg --line-number --no-heading . ~/notes \
+    | fzf --delimiter=: \
+          --preview "glow -s $style {1}" \
+          --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down')
+  [[ -z "$result" ]] && return
+  file=$(echo "$result" | cut -d: -f1)
+  line=$(echo "$result" | cut -d: -f2)
+  nvim "+$line" "$file"
+}
+
+# Create or edit a note by filename (tab-completes)
+alias note='nvim ~/notes/'
+
 
 # User configuration
 
@@ -137,6 +196,9 @@ git-recent() {
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# fzf via Homebrew
+[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ] && source /opt/homebrew/opt/fzf/shell/completion.zsh
 export PATH="$HOME/.local/bin:$PATH"
 
 # Machine-specific config (not tracked in dotfiles)

@@ -69,7 +69,7 @@ if command -v brew &> /dev/null; then
   fi
 else
   echo "⚠ Homebrew not found — install missing tools manually:"
-  echo "  neovim, tmux, lazygit, ripgrep, fd, fzf, cheat, sqlite-rsync"
+  echo "  neovim, tmux, lazygit, ripgrep, fd, fzf, cheat, glow, sqlite-rsync"
 fi
 
 echo "→ Reloading tmux config (if running)..."
