@@ -15,6 +15,7 @@ Personal configuration files for nvim, tmux, zsh, and cheat.
 | `cheatsheets/personal/` | Personal cheatsheets (synced) |
 | `Brewfile` | All Homebrew dependencies |
 | `install.sh` | Bootstrap script |
+| `docs/` | Detailed documentation (theming, etc.) |
 
 > `cheatsheets/work/` is local to each machine and not synced.
 > `cheatsheets/community/` is cloned from [cheat/cheatsheets](https://github.com/cheat/cheatsheets) on install.
@@ -47,7 +48,7 @@ This will:
 - Clone community cheatsheets
 - Template the cheat config with your home directory path
 - Install TPM (tmux plugin manager) if not present
-- Install all Homebrew dependencies from `Brewfile`: `neovim`, `tmux`, `lazygit`, `ripgrep`, `fd`, `fzf`, `cheat`, `sqlite-rsync`, `powerlevel10k`, `zsh-autosuggestions`, `zsh-syntax-highlighting`
+- Install all Homebrew dependencies from `Brewfile`: `neovim`, `tmux`, `lazygit`, `ripgrep`, `fd`, `fzf`, `cheat`, `glow`, `sqlite-rsync`, `powerlevel10k`, `zsh-autosuggestions`, `zsh-syntax-highlighting`
 - Symlink brew-installed zsh plugins into oh-my-zsh custom directory
 - Set up fzf shell bindings (`~/.fzf.zsh`)
 - Reload tmux config if tmux is running
@@ -66,69 +67,32 @@ cheat ls
 
 ## Theming
 
-All three tools — Ghostty, tmux, and Neovim — auto-switch between light and dark themes based on **macOS system appearance**. They each own a separate layer of the UI.
+Ghostty, tmux, and Neovim auto-switch between light/dark based on macOS appearance — each owning a separate UI layer (terminal colors / tmux chrome / editor internals).
 
-### How the layers work
+See [docs/theming.md](docs/theming.md) for the full breakdown: layers, theme assignments, switching mechanism, and customization.
 
-```
-┌─────────────────────────────────────────────────┐
-│ Ghostty (terminal emulator)                     │
-│  Controls: ANSI color palette (colors 0-15),    │
-│  background, foreground, cursor, selection       │
-│  Affects: all text rendered in the terminal pane │
-│                                                  │
-│  ┌─────────────────────────────────────────────┐ │
-│  │ tmux                                        │ │
-│  │  Controls: status bar, pane borders,        │ │
-│  │  window tabs, message bar                   │ │
-│  │  Does NOT affect: pane content              │ │
-│  │                                             │ │
-│  │  ┌───────────────────────────────────────┐  │ │
-│  │  │ Neovim (inside a tmux pane)           │  │ │
-│  │  │  Controls: everything inside the      │  │ │
-│  │  │  editor — syntax, statusline, floats  │  │ │
-│  │  │  Uses true color (#hex), bypasses     │  │ │
-│  │  │  the ANSI palette entirely            │  │ │
-│  │  └───────────────────────────────────────┘  │ │
-│  └─────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────┘
+## Notes
+
+Personal knowledge notes (markdown) live in a separate repo: [andrewli-ca/notes](https://github.com/andrewli-ca/notes), cloned to `~/notes`.
+
+Searched and viewed with `fzf` + `ripgrep` + `glow` via three shell functions defined in `.zshrc`:
+
+| Command | What it does |
+|---|---|
+| `notes` | Fuzzy-search all notes by content; preview with glow; Enter to read, Ctrl-E to edit |
+| `notes-edit` | Same search; skips glow and opens the match in nvim at the exact line |
+| `note <filename>` | Create or open a note by filename (tab-completes) |
+| `ne` | Re-open the last note from `notes` in nvim (at the same line) |
+
+Full workflow documentation: [notes/README.md](https://github.com/andrewli-ca/notes#readme)
+
+### Setup on a new machine
+
+```bash
+git clone git@github.com:andrewli-ca/notes.git ~/notes
 ```
 
-When a CLI tool (e.g. Claude Code) outputs "print this in ANSI color 7", tmux passes it through and **Ghostty** decides what hex color that actually renders as. Neovim sidesteps this entirely by emitting true color escape sequences.
-
-### Theme assignments
-
-| Tool | Light | Dark | Palette |
-|------|-------|------|---------|
-| Ghostty | Catppuccin Latte Custom | Catppuccin Mocha | Catppuccin |
-| tmux | `tmux-themes/light.conf` | `tmux-themes/dark.conf` | Catppuccin |
-| Neovim | Kanso Pearl | Kanso Zen | Kanso |
-
-### Switching mechanism
-
-All three detect macOS appearance independently:
-
-- **Ghostty** — native `light:X,dark:Y` theme syntax; switches live, no restart
-- **tmux** — the `tmux-dark-notify` plugin watches for appearance changes and sources the matching theme file from `tmux-themes/`; `.tmux.conf` also has inline fallback colors for when the plugin hasn't loaded yet
-- **Neovim** — `colorscheme.lua` picks the initial style via `defaults read -g AppleInterfaceStyle`, then `auto-dark-mode.nvim` polls for appearance changes and swaps between `kanso-pearl` and `kanso-zen` live
-
-### File locations
-
-```
-ghostty/config                          # points to light:/dark: themes
-~/.config/ghostty/themes/               # custom Ghostty themes (not in dotfiles)
-  Catppuccin Latte Custom               # modified Latte with better text contrast
-tmux-themes/
-  light.conf                            # Catppuccin Latte for tmux chrome
-  dark.conf                             # Catppuccin Mocha for tmux chrome
-nvim/lua/plugins/colorscheme.lua        # Kanso with live appearance detection
-```
-
-### Customizing
-
-- **Ghostty ANSI palette**: edit `~/.config/ghostty/themes/Catppuccin Latte Custom`. Changes apply to new tabs/windows.
-- **tmux chrome** (status bar, borders): edit `tmux-themes/light.conf` or `dark.conf`. Reload with `prefix + R`.
-- **Neovim**: edit `nvim/lua/plugins/colorscheme.lua`. Restart nvim to apply.  Appearance changes after startup are handled live by `auto-dark-mode.nvim`.
+The `.zshrc` functions expect notes at `~/notes/`. On machines with multiple GitHub SSH keys (e.g. work machine), use the appropriate host alias from `~/.ssh/config` instead — e.g. `git@github-personal:andrewli-ca/notes.git`.
 
 ## Ongoing workflow
 
