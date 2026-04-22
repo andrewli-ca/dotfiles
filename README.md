@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal configuration files for nvim, tmux, zsh, and cheat.
+Personal configuration files for nvim, tmux, zsh, ghostty, and cheat.
 
 ## What's included
 
