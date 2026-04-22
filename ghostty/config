@@ -15,6 +15,9 @@ window-padding-x = 16
 window-padding-y = 16
 theme = light:Kanso Pearl,dark:Kanso Zen
 
+# Brighten bright-black (color 8) so Claude Code's dim diff context is legible
+palette = 8=#6b7280
+
 # Copy on select (handy for React/TypeScript snippets)
 copy-on-select = true
 
