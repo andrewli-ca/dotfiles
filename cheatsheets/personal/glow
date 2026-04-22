@@ -1,0 +1,73 @@
+---
+tags: [ glow, cli, markdown, charm ]
+syntax: bash
+---
+
+# render a markdown file to the terminal
+glow README.md
+
+# launch TUI to browse markdown files in current dir (and subdirs)
+glow
+
+# render with pager (spacebar to page, q to quit)
+glow -p README.md
+
+# render a remote markdown file
+glow https://example.com/README.md
+
+# render a GitHub/GitLab repo's README
+glow github.com/charmbracelet/glow
+
+# pipe markdown from stdin
+cat README.md | glow -
+
+# set word-wrap column width (default 80)
+glow -w 100 README.md
+
+# pick a style: auto | dark | light | notty | pink | dracula | <path to json>
+glow -s dark README.md
+glow -s ~/.config/glow/mystyle.json README.md
+
+# disable styling entirely (plain text)
+glow -s notty README.md
+
+# include all files (even hidden/ignored) when browsing
+glow --all
+
+# print version
+glow --version
+
+# --- TUI keybindings (when run with no file arg) ---
+
+# move selection up / down
+k / j    (or up / down)
+
+# page up / down
+b / f    (or pgup / pgdn)
+
+# jump to top / bottom
+g / G
+
+# open the highlighted doc
+enter
+
+# go back from a rendered doc to the file list
+esc
+
+# search file list
+/
+
+# next / previous search match
+n / N
+
+# stash the current doc (saves locally)
+s
+
+# delete a stashed doc
+x
+
+# toggle help
+?
+
+# quit
+q   (or ctrl+c)
