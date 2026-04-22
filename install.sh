@@ -79,3 +79,4 @@ if tmux info &>/dev/null 2>&1; then
 fi
 
 echo "✓ Done! Open tmux and press prefix + I to install plugins."
+echo "  Run 'source ~/.zshrc' or open a new terminal to load shell functions."
