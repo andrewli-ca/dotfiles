@@ -1,0 +1,56 @@
+---
+tags: [ notes, cli, markdown ]
+syntax: bash
+---
+
+# fuzzy-search note content (Enter = glow, Ctrl-E = nvim at line)
+notes
+
+# fuzzy-search and open directly in nvim
+notes-edit
+
+# create or open a note by filename (tab-completes)
+note <file>.md
+
+# reopen the last note from `notes` in nvim at the matched line
+ne
+
+# grep all notes for a pattern
+rg "pattern" ~/notes
+
+# sync: commit and push
+cd ~/notes && git add -A && git commit -m "update" && git push
+
+# sync: pull on another machine
+git -C ~/notes pull
+
+## keys inside fzf (notes / notes-edit)
+
+# open match in glow
+Enter
+
+# open match in nvim at matched line
+Ctrl+E
+
+# scroll preview pane
+Ctrl+U / Ctrl+D
+
+# cancel
+Esc
+
+## keys inside glow pager
+
+# scroll line
+j / k
+
+# page
+Space / b
+
+# top / bottom
+g / G
+
+# search, next / prev
+/ then n / N
+
+# quit
+q
