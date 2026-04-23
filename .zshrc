@@ -121,6 +121,7 @@ notes() {
           --preview "glow -s $style {1}" \
           --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down' \
           --expect=ctrl-e \
+          --query "$*" \
           --header="enter: read · ctrl-e: edit · ctrl-u/ctrl-d: scroll preview")
   [[ -z "$out" ]] && return
   key=$(echo "$out" | head -1)
@@ -152,6 +153,7 @@ notes-edit() {
   result=$(rg --line-number --no-heading . ~/notes \
     | fzf --delimiter=: \
           --preview "glow -s $style {1}" \
+          --query "$*" \
           --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down')
   [[ -z "$result" ]] && return
   file=$(echo "$result" | cut -d: -f1)
