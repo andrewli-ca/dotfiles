@@ -1,0 +1,67 @@
+---
+tags: [ grep, cli, search ]
+syntax: bash
+---
+
+# basic search (every line containing pattern, as a substring)
+grep "pattern" file
+
+# case-insensitive
+grep -i "pattern" file
+
+# whole-word match (won't match "unstash" when searching "stash")
+grep -w "stash" file
+
+# recursive search in a directory
+grep -r "pattern" path/
+
+# show line numbers
+grep -n "pattern" file
+
+# invert: lines that do NOT match
+grep -v "pattern" file
+
+# stop after first N matches
+grep -m 1 "pattern" file
+
+# print N lines After each match (good for comment-then-command cheatsheets)
+grep -A 1 "pattern" file
+
+# print N lines Before each match
+grep -B 2 "pattern" file
+
+# print N lines of Context (before AND after)
+grep -C 2 "pattern" file
+
+# count matching lines (not lines printed)
+grep -c "pattern" file
+
+# print only the matched portion, not the whole line
+grep -o "pattern" file
+
+# list only filenames that contain a match
+grep -l "pattern" *.txt
+
+# list filenames that do NOT contain a match
+grep -L "pattern" *.txt
+
+# extended regex (no need to escape +, ?, |, (), {})
+grep -E "foo|bar" file
+
+# fixed string (treat pattern as literal, no regex)
+grep -F "a.b.c" file
+
+# multiple patterns (OR)
+grep -e "foo" -e "bar" file
+
+# patterns from a file (one per line)
+grep -f patterns.txt file
+
+# exclude files/dirs when recursing
+grep -r "pattern" . --exclude-dir=node_modules --exclude="*.log"
+
+# include only certain files when recursing
+grep -r "pattern" . --include="*.ts"
+
+# search within a single cheatsheet (comment + command pair)
+cheat tmux | grep -A 1 "keyword"
