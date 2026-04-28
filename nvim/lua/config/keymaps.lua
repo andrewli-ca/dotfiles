@@ -13,6 +13,10 @@ vim.keymap.set("n", "<leader>yp", function()
   vim.fn.setreg("+", vim.fn.expand("%:p:."))
 end, { desc = "Copy file path" })
 
+vim.keymap.set("n", "<leader>yP", function()
+  vim.fn.setreg("+", vim.fn.expand("%:p"))
+end, { desc = "Copy absolute file path" })
+
 vim.keymap.set("n", "<leader>yd", function()
   vim.fn.setreg("+", vim.fn.expand("%:h"))
 end, { desc = "Copy directory path" })
@@ -20,3 +24,7 @@ end, { desc = "Copy directory path" })
 vim.keymap.set("n", "<leader>yf", function()
   vim.fn.setreg("+", vim.fn.expand("%:t:r"))
 end, { desc = "Copy file name" })
+
+vim.keymap.set("n", "<leader>yn", function()
+  vim.fn.setreg("+", vim.fn.expand("%:t"))
+end, { desc = "Copy file name with extension" })

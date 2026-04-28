@@ -21,8 +21,14 @@ Ctrl-a d
 # interactive session list (navigate with j/k)
 Ctrl-a s
 
-# previous / next session
-Ctrl-a ( / )
+# jump to session by name
+Ctrl-a g
+
+# previous session
+Ctrl-a (
+
+# next session
+Ctrl-a )
 
 # rename current session
 Ctrl-a $

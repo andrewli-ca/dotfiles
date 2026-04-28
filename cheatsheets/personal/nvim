@@ -189,14 +189,25 @@ Space p
 # paste from system clipboard before cursor (normal or visual)
 Space P
 
+# mnemonic for yank-path mappings:
+#   p = path (relative),   P = Path (absolute)    -- capital = fuller form
+#   d = directory
+#   f = file stem,         n = filename with ext  -- lowercase = shorter form
+
 # copy relative file path to clipboard
 Space yp
+
+# copy absolute file path to clipboard
+Space yP
 
 # copy directory path to clipboard
 Space yd
 
 # copy file name (without extension) to clipboard
 Space yf
+
+# copy file name (with extension) to clipboard
+Space yn
 
 # open lazygit
 Space gg
