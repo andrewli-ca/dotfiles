@@ -23,18 +23,21 @@ echo "→ Backing up existing configs..."
 BACKUP="$HOME/.dotfiles-backup-$(date +%Y%m%d%H%M%S)"
 mkdir -p "$BACKUP"
 for f in ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml \
-          ~/.config/cheat/cheatsheets/personal \
+          ~/.config/cheat/cheatsheets/personal ~/.config/ccstatusline/settings.json \
+          ~/.claude/settings.json \
           "$HOME/Library/Preferences/glow/glow.yml"; do
   [ -e "$f" ] && cp -rL "$f" "$BACKUP/" && echo "  backed up $f"
 done
 
 echo "→ Cleaning up old configs..."
 rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml \
-       ~/.config/cheat/cheatsheets/personal \
+       ~/.config/cheat/cheatsheets/personal ~/.config/ccstatusline/settings.json \
+       ~/.claude/settings.json \
        "$HOME/Library/Preferences/glow/glow.yml"
 
 echo "→ Linking configs..."
 mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets ~/.config/ghostty \
+         ~/.config/ccstatusline ~/.claude \
          "$HOME/Library/Preferences/glow"
 
 link $DOTFILES/nvim ~/.config/nvim
@@ -43,6 +46,8 @@ link $DOTFILES/.zshrc ~/.zshrc
 link $DOTFILES/.p10k.zsh ~/.p10k.zsh
 link $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
 link $DOTFILES/ghostty/config ~/.config/ghostty/config
+link $DOTFILES/ccstatusline/settings.json ~/.config/ccstatusline/settings.json
+link $DOTFILES/claude/settings.json ~/.claude/settings.json
 sed "s|/Users/andrew|$HOME|g" $DOTFILES/glow/glow.yml > "$HOME/Library/Preferences/glow/glow.yml"
 mkdir -p ~/.config/cheat/cheatsheets/work
 
