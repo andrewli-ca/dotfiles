@@ -1,0 +1,76 @@
+---
+tags: [ docker, colima, cleanup, reset ]
+syntax: bash
+---
+
+# show disk usage summary (images / containers / volumes / build cache)
+docker system df
+
+# verbose breakdown (per-image, per-container, per-volume sizes)
+docker system df -v
+
+# list images by size, largest first
+docker images --format "{{.Size}}\t{{.Repository}}:{{.Tag}}" | sort -h -r
+
+# list dangling volumes (no container linked to them)
+docker volume ls -qf dangling=true
+
+# list exited containers
+docker ps -a --filter "status=exited"
+
+# --- targeted cleanup (safest first) ---
+
+# remove all stopped containers
+docker container prune -f
+
+# remove dangling images (untagged layers)
+docker image prune -f
+
+# remove ALL images not used by a running container (aggressive)
+docker image prune -af
+
+# remove build cache
+docker builder prune -af
+
+# remove dangling volumes (⚠️ inspect first — data loss)
+docker volume ls -qf dangling=true
+docker volume prune -f
+
+# remove a specific image / volume
+docker image rm <image>:<tag>
+docker volume rm <volume-name>
+
+# --- nuclear options ---
+
+# prune everything unused except volumes
+docker system prune -af
+
+# prune everything including volumes (⚠️ destroys orphaned DB data)
+docker system prune -af --volumes
+
+# --- colima (the macOS VM hosting docker) ---
+
+# status / start / stop
+colima status
+colima start
+colima stop
+
+# wipe the entire VM disk (frees the qcow2 datadisk on host) — full reset
+colima delete
+
+# recreate with a custom disk size (GB)
+colima start --disk 60
+
+# show where the VM disk lives on the host
+du -sh ~/.colima/_lima/_disks/colima/datadisk
+
+# --- compose project reset ---
+
+# stop and remove containers + networks for a compose project
+docker compose down
+
+# also remove named volumes declared in the compose file (⚠️ data loss)
+docker compose down -v
+
+# rebuild from scratch ignoring cache
+docker compose build --no-cache
