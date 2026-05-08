@@ -37,8 +37,13 @@ rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml
 
 echo "→ Linking configs..."
 mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets ~/.config/ghostty \
-         ~/.config/ccstatusline ~/.claude \
+         ~/.config/ccstatusline ~/.claude ~/.local/bin \
          "$HOME/Library/Preferences/glow"
+
+# Link executables in bin/ to ~/.local/bin
+for src in $DOTFILES/bin/*; do
+  [ -f "$src" ] && link "$src" "$HOME/.local/bin/$(basename "$src")"
+done
 
 link $DOTFILES/nvim ~/.config/nvim
 link $DOTFILES/.tmux.conf ~/.tmux.conf

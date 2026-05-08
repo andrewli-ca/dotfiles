@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# chs — fuzzy-search and resume Claude Code sessions
+set -eu
+
+INDEX="${XDG_CACHE_HOME:-$HOME/.cache}/claude-history.tsv"
+mkdir -p "$(dirname "$INDEX")"
+
+# Build a row for a single session file: WHEN<TAB>CWD<TAB>SID<TAB>PREVIEW
+build_row() {
+  local f="$1" sid mtime when cwd preview
+  [ -s "$f" ] || return 0
+  sid=$(basename "$f" .jsonl)
+  mtime=$(stat -f %m "$f" 2>/dev/null || stat -c %Y "$f")
+  when=$(date -r "$mtime" "+%Y-%m-%d %H:%M" 2>/dev/null || echo "?")
+  cwd=$(jq -r 'select(.cwd) | .cwd' "$f" 2>/dev/null | head -1)
+  [ -z "$cwd" ] && cwd="?"
+  preview=$(jq -r '
+    select(.type=="user" and (.message.content | type=="string"))
+    | .message.content
+    | select(startswith("<command-") | not)
+    | select(startswith("Caveat:") | not)
+    | select(startswith("<local-command") | not)
+  ' "$f" 2>/dev/null | head -1 | tr '\n\t' '  ' | cut -c1-160)
+  [ -z "$preview" ] && preview="(empty)"
+  printf '%s\t%s\t%s\t%s\n' "$when" "$cwd" "$sid" "$preview"
+}
+
+if [ "${1:-}" = "--rebuild" ] || [ ! -f "$INDEX" ]; then
+  # Full rebuild: missing cache or explicit request
+  echo "indexing claude history (full)..." >&2
+  while IFS= read -r f; do build_row "$f"; done \
+    < <(find "$HOME/.claude/projects" -name "*.jsonl" -type f) \
+    | sort -r > "$INDEX"
+else
+  # Incremental: re-index only files modified since cache mtime
+  changed=$(find "$HOME/.claude/projects" -name "*.jsonl" -type f -newer "$INDEX")
+  if [ -n "$changed" ]; then
+    n_changed=$(printf '%s\n' "$changed" | wc -l | tr -d ' ')
+    echo "updating index ($n_changed changed)..." >&2
+    new_rows=$(while IFS= read -r f; do build_row "$f"; done <<< "$changed")
+    if [ -n "$new_rows" ]; then
+      tmp_index=$(mktemp)
+      tmp_sids=$(mktemp)
+      # Match each changed sid surrounded by tabs (its position in the row)
+      printf '%s\n' "$new_rows" | cut -f3 | awk '{print "\t"$0"\t"}' > "$tmp_sids"
+      grep -v -F -f "$tmp_sids" "$INDEX" > "$tmp_index" || true
+      printf '%s\n' "$new_rows" >> "$tmp_index"
+      sort -r "$tmp_index" > "$INDEX"
+      rm -f "$tmp_index" "$tmp_sids"
+    fi
+  fi
+fi
+
+# Build display column: "WHEN  CWD-suffix  PREVIEW", then hidden tab-fields for sid + cwd
+pick=$(awk -F'\t' '{
+    cwd=$2
+    if (length(cwd) > 45) cwd = "…" substr(cwd, length(cwd)-43)
+    printf "%-16s  %-45s  %s\t%s\t%s\n", $1, cwd, $4, $3, $2
+  }' "$INDEX" \
+  | fzf --delimiter=$'\t' --with-nth=1 --no-sort --ansi \
+        --header="enter=resume  esc=quit  ctrl-r=refresh  ?=toggle-preview  ($(wc -l < "$INDEX" | tr -d ' ') sessions)" \
+        --bind "ctrl-r:reload(awk -F'\t' '{cwd=\$2; if(length(cwd)>45) cwd=\"…\" substr(cwd, length(cwd)-43); printf \"%-16s  %-45s  %s\t%s\t%s\n\", \$1, cwd, \$4, \$3, \$2}' '$INDEX')" \
+        --bind "?:toggle-preview" \
+        --preview="f=\$(echo $HOME/.claude/projects/*/{2}.jsonl 2>/dev/null); [ -f \"\$f\" ] && jq -r 'select(.type==\"user\" and (.message.content|type==\"string\")) | \"=== \" + (.timestamp // \"?\") + \" ===\\n\" + .message.content + \"\\n\"' \"\$f\" 2>/dev/null | head -200 || echo 'no preview'" \
+        --preview-window=down:60%:wrap:border-top) || exit 0
+
+sid=$(printf '%s' "$pick" | cut -f2)
+cwd=$(printf '%s' "$pick" | cut -f3)
+
+if [ ! -d "$cwd" ]; then
+  echo "cwd no longer exists: $cwd" >&2
+  echo "session id: $sid" >&2
+  exit 1
+fi
+
+cd "$cwd"
+echo "→ $cwd" >&2
+exec claude --resume "$sid"
