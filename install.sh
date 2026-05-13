@@ -40,11 +40,6 @@ mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets ~/.config/ghostty
          ~/.config/ccstatusline ~/.claude ~/.local/bin \
          "$HOME/Library/Preferences/glow"
 
-# Link executables in bin/ to ~/.local/bin
-for src in $DOTFILES/bin/*; do
-  [ -f "$src" ] && link "$src" "$HOME/.local/bin/$(basename "$src")"
-done
-
 link $DOTFILES/nvim ~/.config/nvim
 link $DOTFILES/.tmux.conf ~/.tmux.conf
 link $DOTFILES/.zshrc ~/.zshrc

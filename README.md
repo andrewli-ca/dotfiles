@@ -11,6 +11,7 @@ Personal configuration files for nvim, tmux, zsh, ghostty, and cheat.
 | `.zshrc` | Zsh config with Oh My Zsh, Powerlevel10k, and plugins |
 | `.p10k.zsh` | Powerlevel10k prompt config |
 | `ghostty/` | Ghostty terminal config |
+| `bin/` | Personal scripts (on `$PATH` via `.zshrc`) |
 | `cheat-conf.yml` | cheat CLI config |
 | `cheatsheets/personal/` | Personal cheatsheets (synced) |
 | `Brewfile` | All Homebrew dependencies |

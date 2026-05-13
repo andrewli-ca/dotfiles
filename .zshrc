@@ -201,7 +201,7 @@ alias note='nvim ~/notes/'
 # fzf via Homebrew
 [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ] && source /opt/homebrew/opt/fzf/shell/completion.zsh
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.dotfiles/bin:$PATH"
 
 # Machine-specific config (not tracked in dotfiles)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
