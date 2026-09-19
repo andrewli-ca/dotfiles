@@ -54,6 +54,9 @@ Ctrl-a &
 # kill window 3
 Ctrl-a : kill-window -t 3
 
+# window menu (swap left/right, swap marked, rename, kill, new)
+Ctrl-a <
+
 # enter copy mode
 Ctrl-a [
 
