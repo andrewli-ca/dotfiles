@@ -69,3 +69,9 @@ q
 # reload tmux config
 Ctrl-a r
 
+# clear screen (plain Ctrl-l moves to the right pane)
+Ctrl-a Ctrl-l
+
+# toggle zoom current pane fullscreen (tab shows [Z] while zoomed)
+Ctrl-a z
+
