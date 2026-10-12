@@ -1,3 +1,9 @@
+local exclude = { ".git", "node_modules" }
+
+local function file_dir()
+  return vim.fn.expand("%:p:h")
+end
+
 return {
   {
     "ahmedkhalf/project.nvim",
@@ -9,23 +15,26 @@ return {
     end,
   },
   {
-    "nvim-telescope/telescope.nvim",
+    "folke/snacks.nvim",
+    opts = {
+      picker = {
+        sources = {
+          explorer = { hidden = true, ignored = true, exclude = { ".git" } },
+        },
+      },
+    },
     keys = {
+      { "<leader>f.", function() Snacks.picker.files({ cwd = file_dir() }) end, desc = "Find Files (file dir)" },
+      { "<leader>s.", function() Snacks.picker.grep({ cwd = file_dir() }) end, desc = "Grep (file dir)" },
       {
-        "<leader><leader>",
-        function()
-          local hidden = vim.v.count == 1
-          require("telescope.builtin").find_files({ cwd = vim.fn.getcwd(), hidden = hidden })
-        end,
-        desc = "Find Files (cwd) — prefix 1 to include hidden",
+        "<leader>fa",
+        function() Snacks.picker.files({ cwd = LazyVim.root(), hidden = true, ignored = true, exclude = exclude }) end,
+        desc = "Find All Files (hidden + ignored)",
       },
       {
-        "<leader>fP",
-        function()
-          local root = LazyVim.root.git() or LazyVim.root() or vim.fn.getcwd()
-          require("telescope.builtin").find_files({ cwd = root })
-        end,
-        desc = "Find Files (project root)",
+        "<leader>sA",
+        function() Snacks.picker.grep({ cwd = LazyVim.root(), hidden = true, ignored = true, exclude = exclude }) end,
+        desc = "Grep All (hidden + ignored)",
       },
     },
   },
