@@ -1,5 +1,6 @@
 # Editor
 brew "neovim"
+brew "ruff" # Python formatter & linter
 
 # Terminal
 brew "tmux"

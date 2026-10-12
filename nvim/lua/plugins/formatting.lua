@@ -4,10 +4,7 @@ return {
     opts = {
       formatters_by_ft = {
         markdown = { "markdownlint-cli2" },
-      },
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
+        python = { "ruff_organize_imports", "ruff_format" },
       },
     },
   },

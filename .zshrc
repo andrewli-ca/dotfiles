@@ -207,6 +207,8 @@ claude() {
 # fzf via Homebrew
 [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ] && source /opt/homebrew/opt/fzf/shell/completion.zsh
+# Unversioned python/pip from Homebrew (gives `python` and `pip`, not just `python3`)
+export PATH="/opt/homebrew/opt/python@3.14/libexec/bin:$PATH"
 export PATH="$HOME/.local/bin:$HOME/.dotfiles/bin:$PATH"
 
 # Machine-specific config (not tracked in dotfiles)
