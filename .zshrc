@@ -223,3 +223,10 @@ export PATH="$HOME/.local/bin:$HOME/.dotfiles/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/andrew/.local/bin:$PATH"
