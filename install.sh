@@ -32,7 +32,6 @@ done
 echo "→ Cleaning up old configs..."
 rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml \
        ~/.config/cheat/cheatsheets/personal ~/.config/ccstatusline/settings.json \
-       ~/.claude/settings.json \
        "$HOME/Library/Preferences/glow/glow.yml"
 
 echo "→ Linking configs..."
@@ -46,8 +45,13 @@ link $DOTFILES/.zshrc ~/.zshrc
 link $DOTFILES/.p10k.zsh ~/.p10k.zsh
 link $DOTFILES/cheatsheets/personal ~/.config/cheat/cheatsheets/personal
 link $DOTFILES/ghostty/config ~/.config/ghostty/config
+link $DOTFILES/ghostty/themes ~/.config/ghostty/themes
 link $DOTFILES/ccstatusline/settings.json ~/.config/ccstatusline/settings.json
-link $DOTFILES/claude/settings.json ~/.claude/settings.json
+# Keep the active claude-profile (full/lean); only default to full if unmanaged
+case "$(readlink ~/.claude/settings.json 2>/dev/null)" in
+  "$DOTFILES"/claude/settings*.json) ;;
+  *) link $DOTFILES/claude/settings.json ~/.claude/settings.json ;;
+esac
 sed "s|/Users/andrew|$HOME|g" $DOTFILES/glow/glow.yml > "$HOME/Library/Preferences/glow/glow.yml"
 mkdir -p ~/.config/cheat/cheatsheets/work
 
@@ -78,7 +82,8 @@ if command -v brew &> /dev/null; then
   fi
 else
   echo "⚠ Homebrew not found — install missing tools manually:"
-  echo "  neovim, tmux, lazygit, ripgrep, fd, fzf, cheat, glow, sqlite-rsync"
+  echo "  neovim, ruff, tmux, dark-notify, lazygit, ripgrep, fd, fzf, cheat, glow,"
+  echo "  sqlite-rsync, node, python"
 fi
 
 echo "→ Reloading tmux config (if running)..."

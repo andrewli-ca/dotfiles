@@ -34,7 +34,7 @@ When a CLI tool (e.g. Claude Code) outputs "print this in ANSI color 7", tmux pa
 
 | Tool | Light | Dark | Palette |
 |------|-------|------|---------|
-| Ghostty | Catppuccin Latte Custom | Catppuccin Mocha | Catppuccin |
+| Ghostty | Kanso Pearl | Kanso Zen | Kanso |
 | tmux | `tmux-themes/light.conf` | `tmux-themes/dark.conf` | Catppuccin |
 | Neovim | Kanso Pearl | Kanso Zen | Kanso |
 
@@ -50,7 +50,7 @@ All three detect macOS appearance independently:
 
 ```
 ghostty/config                          # points to light:/dark: themes
-~/.config/ghostty/themes/               # custom Ghostty themes (not in dotfiles)
+ghostty/themes/                         # custom Ghostty themes (linked to ~/.config/ghostty/themes)
   Catppuccin Latte Custom               # modified Latte with better text contrast
 tmux-themes/
   light.conf                            # Catppuccin Latte for tmux chrome
@@ -60,6 +60,6 @@ nvim/lua/plugins/colorscheme.lua        # Kanso with live appearance detection
 
 ## Customizing
 
-- **Ghostty ANSI palette**: edit `~/.config/ghostty/themes/Catppuccin Latte Custom`. Changes apply to new tabs/windows.
+- **Ghostty ANSI palette**: edit `ghostty/themes/Catppuccin Latte Custom`. Changes apply to new tabs/windows.
 - **tmux chrome** (status bar, borders): edit `tmux-themes/light.conf` or `dark.conf`. Reload with `prefix + R`.
 - **Neovim**: edit `nvim/lua/plugins/colorscheme.lua`. Restart nvim to apply. Appearance changes after startup are handled live by `auto-dark-mode.nvim`.

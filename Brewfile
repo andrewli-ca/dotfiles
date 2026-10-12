@@ -6,6 +6,10 @@ brew "ruff" # Python formatter & linter
 brew "tmux"
 brew "cormacrelf/tap/dark-notify"
 
+# Runtimes
+brew "node" # npx for ccstatusline (Claude Code status line)
+brew "python" # unversioned python/pip on PATH via .zshrc
+
 # Shell
 brew "fzf"
 brew "sqlite-rsync"

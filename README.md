@@ -45,11 +45,13 @@ cd ~/.dotfiles
 This will:
 - Back up any existing configs to `~/.dotfiles-backup-<timestamp>`
 - Install Oh My Zsh (if not present)
-- Symlink all configs to their correct locations (nvim, tmux, zsh, ghostty, cheat)
+- Symlink all configs to their correct locations (nvim, tmux, zsh, ghostty config + themes, cheat, ccstatusline)
+- Link Claude Code settings to the full profile, unless a `claude-profile` (full/lean) is already active
+- Template the glow config with your home directory path
 - Clone community cheatsheets
 - Template the cheat config with your home directory path
 - Install TPM (tmux plugin manager) if not present
-- Install all Homebrew dependencies from `Brewfile`: `neovim`, `tmux`, `lazygit`, `ripgrep`, `fd`, `fzf`, `cheat`, `glow`, `sqlite-rsync`, `powerlevel10k`, `zsh-autosuggestions`, `zsh-syntax-highlighting`
+- Install all Homebrew dependencies from `Brewfile`: `neovim`, `ruff`, `tmux`, `dark-notify`, `node`, `python`, `lazygit`, `ripgrep`, `fd`, `fzf`, `cheat`, `glow`, `sqlite-rsync`, `powerlevel10k`, `zsh-autosuggestions`, `zsh-syntax-highlighting`
 - Symlink brew-installed zsh plugins into oh-my-zsh custom directory
 - Set up fzf shell bindings (`~/.fzf.zsh`)
 - Reload tmux config if tmux is running
