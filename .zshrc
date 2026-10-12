@@ -218,7 +218,7 @@ export PATH="$HOME/.local/bin:$HOME/.dotfiles/bin:$PATH"
 [[ -f "$HOME/.openclaw/completions/openclaw.zsh" ]] && source "$HOME/.openclaw/completions/openclaw.zsh"
 
 # bun completions
-[ -s "/Users/andrew/.bun/_bun" ] && source "/Users/andrew/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -226,7 +226,3 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
-
-
-# Added by Antigravity CLI installer
-export PATH="/Users/andrew/.local/bin:$PATH"
