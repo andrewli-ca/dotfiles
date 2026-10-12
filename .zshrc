@@ -164,6 +164,12 @@ notes-edit() {
 # Create or edit a note by filename (tab-completes)
 alias note='nvim ~/notes/'
 
+# Clear skills/plugins before launch when on the lean profile (see claude-profile)
+claude() {
+  claude-profile sync
+  command claude "$@"
+}
+
 
 # User configuration
 

@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# claude-profile — switch ~/.claude/settings.json between dotfiles profiles
+#   full: skills + plugins (claude/settings.json)
+#   lean: no skills/plugins, minimal context (claude/settings.lean.json)
+#
+# On lean, ~/.claude/skills and ~/.claude/plugins are stashed in
+# ~/.claude/profiles/full/ so neither folder exists. Anything Claude creates
+# there during a lean session is discarded when switching back to full.
+set -eu
+
+DIR="$HOME/.dotfiles/claude"
+CLAUDE="$HOME/.claude"
+TARGET="$CLAUDE/settings.json"
+STASH="$CLAUDE/profiles/full"
+DIRS="skills plugins"
+
+current() {
+  if [ -L "$TARGET" ]; then
+    case "$(readlink "$TARGET")" in
+      "$DIR/settings.json") echo full ;;
+      "$DIR/settings.lean.json") echo lean ;;
+      *) echo "unknown ($(readlink "$TARGET"))" ;;
+    esac
+  elif [ -e "$TARGET" ]; then
+    echo "unmanaged (regular file)"
+  else
+    echo none
+  fi
+}
+
+status() {
+  echo "profile: $(current)"
+  for d in $DIRS; do
+    if [ -e "$CLAUDE/$d" ]; then
+      echo "  ~/.claude/$d: present ($(du -sh "$CLAUDE/$d" | cut -f1))"
+    else
+      echo "  ~/.claude/$d: absent"
+    fi
+  done
+}
+
+case "${1:-}" in
+  "") status; exit 0 ;;
+  # Quietly clear lean leftovers; run before every claude launch
+  sync) [ "$(current)" = lean ] && exec "$0" lean >/dev/null 2>&1; exit 0 ;;
+  full) src="$DIR/settings.json" ;;
+  lean) src="$DIR/settings.lean.json" ;;
+  toggle) [ "$(current)" = lean ] && exec "$0" full || exec "$0" lean ;;
+  *) echo "usage: claude-profile [full|lean|toggle|sync]" >&2; exit 1 ;;
+esac
+
+[ -f "$src" ] || { echo "missing $src" >&2; exit 1; }
+
+if pgrep -xq claude; then
+  echo "warning: claude is running — restart those sessions after switching" >&2
+fi
+
+if [ "$1" = lean ]; then
+  # Stash full's skills/plugins; leave nothing behind
+  mkdir -p "$STASH"
+  for d in $DIRS; do
+    [ -e "$CLAUDE/$d" ] || continue
+    if [ -e "$STASH/$d" ]; then
+      # Already stashed — this is lean-session leftovers
+      rm -rf "$CLAUDE/$d"
+    else
+      mv "$CLAUDE/$d" "$STASH/$d"
+    fi
+  done
+else
+  # Discard lean leftovers, restore full's skills/plugins
+  for d in $DIRS; do
+    [ -e "$STASH/$d" ] || continue
+    rm -rf "$CLAUDE/$d"
+    mv "$STASH/$d" "$CLAUDE/$d"
+  done
+fi
+
+# Never clobber a real file — Claude Code may have replaced the symlink
+if [ -e "$TARGET" ] && [ ! -L "$TARGET" ]; then
+  bak="$TARGET.$(date +%Y%m%d%H%M%S).bak"
+  mv "$TARGET" "$bak"
+  echo "backed up $TARGET → $bak"
+fi
+
+ln -sfn "$src" "$TARGET"
+echo "claude profile: $1 (restart claude to apply)"
+status

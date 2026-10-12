@@ -75,4 +75,5 @@ fi
 
 cd "$cwd"
 echo "→ $cwd" >&2
+claude-profile sync
 exec claude --resume "$sid"
