@@ -50,16 +50,28 @@ Ctrl-a z
 # swap pane with previous / next (by index)
 Ctrl-a { / }
 
+# rotate panes forward / backward in current window
+Ctrl-a Ctrl-o / Alt-o
+
 # swap pane 1 with pane 2
 Ctrl-a : swap-pane -s 1 -t 2
 
-# rotate panes forward in current window
-Ctrl-a : rotate-window
+# swap current pane with the marked pane (mark first with Ctrl-a m)
+Ctrl-a : swap-pane
+
+# pane menu (swap up/down, swap marked, split, kill, zoom)
+Ctrl-a >
+
+# window menu (swap left/right, swap marked, rename, kill, new)
+Ctrl-a <
 
 # --- Layouts ---
 
 # cycle through preset layouts
 Ctrl-a Space
+
+# spread panes out evenly within the current layout
+Ctrl-a E
 
 # all panes side by side (even-horizontal)
 Ctrl-a Alt-1
@@ -67,14 +79,20 @@ Ctrl-a Alt-1
 # all panes stacked (even-vertical)
 Ctrl-a Alt-2
 
-# main pane top, others side by side below (main-horizontal)
+# promote current pane to main, then main-horizontal (main on top)
 Ctrl-a Alt-3
 
-# main pane left, others stacked right (main-vertical)
+# promote current pane to main, then main-vertical (main on left)
 Ctrl-a Alt-4
 
 # tiled (equal grid)
 Ctrl-a Alt-5
+
+# main pane bottom, others above (main-horizontal-mirrored)
+Ctrl-a Alt-6
+
+# main pane right, others stacked left (main-vertical-mirrored)
+Ctrl-a Alt-7
 
 # --- Moving Panes Between Windows ---
 
