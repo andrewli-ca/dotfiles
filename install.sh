@@ -24,7 +24,7 @@ BACKUP="$HOME/.dotfiles-backup-$(date +%Y%m%d%H%M%S)"
 mkdir -p "$BACKUP"
 for f in ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml \
           ~/.config/cheat/cheatsheets/personal ~/.config/ccstatusline/settings.json \
-          ~/.claude/settings.json \
+          ~/.claude/settings.json ~/.claude-personal/settings.json \
           "$HOME/Library/Preferences/glow/glow.yml"; do
   [ -e "$f" ] && cp -rL "$f" "$BACKUP/" && echo "  backed up $f"
 done
@@ -36,7 +36,7 @@ rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml
 
 echo "→ Linking configs..."
 mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets ~/.config/ghostty \
-         ~/.config/ccstatusline ~/.claude ~/.local/bin \
+         ~/.config/ccstatusline ~/.claude ~/.claude-personal ~/.local/bin \
          "$HOME/Library/Preferences/glow"
 
 link $DOTFILES/nvim ~/.config/nvim
@@ -48,10 +48,13 @@ link $DOTFILES/ghostty/config ~/.config/ghostty/config
 link $DOTFILES/ghostty/themes ~/.config/ghostty/themes
 link $DOTFILES/ccstatusline/settings.json ~/.config/ccstatusline/settings.json
 # Keep the active claude-profile (full/lean); only default to full if unmanaged
-case "$(readlink ~/.claude/settings.json 2>/dev/null)" in
-  "$DOTFILES"/claude/settings*.json) ;;
-  *) link $DOTFILES/claude/settings.json ~/.claude/settings.json ;;
-esac
+# ~/.claude is the work account, ~/.claude-personal the personal one (claude-personal)
+for c in ~/.claude ~/.claude-personal; do
+  case "$(readlink "$c/settings.json" 2>/dev/null)" in
+    "$DOTFILES"/claude/settings*.json) ;;
+    *) link $DOTFILES/claude/settings.json "$c/settings.json" ;;
+  esac
+done
 sed "s|/Users/andrew|$HOME|g" $DOTFILES/glow/glow.yml > "$HOME/Library/Preferences/glow/glow.yml"
 mkdir -p ~/.config/cheat/cheatsheets/work
 
