@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-# claude-profile — switch ~/.claude/settings.json between dotfiles profiles
+# claude-profile — switch $CLAUDE/settings.json between dotfiles profiles
 #   full: skills + plugins (claude/settings.json)
 #   lean: no skills/plugins, minimal context (claude/settings.lean.json)
 #
-# On lean, ~/.claude/skills and ~/.claude/plugins are stashed in
-# ~/.claude/profiles/full/ so neither folder exists. Anything Claude creates
+# $CLAUDE is $CLAUDE_CONFIG_DIR if set (e.g. ~/.claude-personal), else ~/.claude.
+#
+# On lean, $CLAUDE/skills and $CLAUDE/plugins are stashed in
+# $CLAUDE/profiles/full/ so neither folder exists. Anything Claude creates
 # there during a lean session is discarded when switching back to full.
 set -eu
 
 DIR="$HOME/.dotfiles/claude"
-CLAUDE="$HOME/.claude"
+CLAUDE="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+SHOW="${CLAUDE/#$HOME/~}"
 TARGET="$CLAUDE/settings.json"
 STASH="$CLAUDE/profiles/full"
 DIRS="skills plugins"
@@ -29,12 +32,12 @@ current() {
 }
 
 status() {
-  echo "profile: $(current)"
+  echo "profile: $(current) ($SHOW)"
   for d in $DIRS; do
     if [ -e "$CLAUDE/$d" ]; then
-      echo "  ~/.claude/$d: present ($(du -sh "$CLAUDE/$d" | cut -f1))"
+      echo "  $SHOW/$d: present ($(du -sh "$CLAUDE/$d" | cut -f1))"
     else
-      echo "  ~/.claude/$d: absent"
+      echo "  $SHOW/$d: absent"
     fi
   done
 }
