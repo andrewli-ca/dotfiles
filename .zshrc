@@ -170,6 +170,9 @@ claude() {
   command claude "$@"
 }
 
+# Personal account: isolated config, history, and credentials
+alias claude-personal='CLAUDE_CONFIG_DIR=$HOME/.claude-personal claude'
+
 
 # User configuration
 
