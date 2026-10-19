@@ -57,6 +57,13 @@ for c in ~/.claude ~/.claude-*/; do
     *) link $DOTFILES/claude/settings.json "$c/settings.json" ;;
   esac
 done
+# Main Claude profile for this machine (see claude-as in .zshrc); never overrides an existing one.
+# Defaults to personal; on a work machine run: CLAUDE_MAIN=work ./install.sh
+if ! grep -q '^CLAUDE_MAIN=' ~/.zshrc.local 2>/dev/null; then
+  printf '# Claude profile that lives in ~/.claude on this machine (see claude-as in ~/.zshrc)\nCLAUDE_MAIN=%s\n' \
+    "${CLAUDE_MAIN:-personal}" >> ~/.zshrc.local
+  echo "  set CLAUDE_MAIN=${CLAUDE_MAIN:-personal} in ~/.zshrc.local"
+fi
 sed "s|/Users/andrew|$HOME|g" $DOTFILES/glow/glow.yml > "$HOME/Library/Preferences/glow/glow.yml"
 mkdir -p ~/.config/cheat/cheatsheets/work
 

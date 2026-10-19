@@ -37,6 +37,8 @@ Profiles are separate folders, not a symlink you swap. Claude Code stores the de
 
 ## Setup per machine
 
+`install.sh` writes `CLAUDE_MAIN` to `~/.zshrc.local` when it isn't set yet, defaulting to `personal`. It never changes an existing value. Pick a different main profile on first install with `CLAUDE_MAIN=work ./install.sh`.
+
 **Work machine** — `~/.zshrc.local`:
 
 ```zsh

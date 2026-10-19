@@ -48,6 +48,7 @@ This will:
 - Install Oh My Zsh (if not present)
 - Symlink all configs to their correct locations (nvim, tmux, zsh, ghostty config + themes, cheat, ccstatusline)
 - Link Claude Code base settings into `~/.claude` and any `~/.claude-*` profile folder, unless a `claude-profile` (full/lean) is already active
+- Set the machine's main Claude profile (`CLAUDE_MAIN=personal`) in `~/.zshrc.local` if none is set — run `CLAUDE_MAIN=work ./install.sh` on a work machine
 - Template the glow config with your home directory path
 - Clone community cheatsheets
 - Template the cheat config with your home directory path
