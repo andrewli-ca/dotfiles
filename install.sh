@@ -36,7 +36,7 @@ rm -rf ~/.config/nvim ~/.tmux.conf ~/.zshrc ~/.p10k.zsh ~/.config/cheat/conf.yml
 
 echo "→ Linking configs..."
 mkdir -p ~/.config ~/.config/cheat ~/.config/cheat/cheatsheets ~/.config/ghostty \
-         ~/.config/ccstatusline ~/.claude ~/.claude-personal ~/.local/bin \
+         ~/.config/ccstatusline ~/.claude ~/.local/bin \
          "$HOME/Library/Preferences/glow"
 
 link $DOTFILES/nvim ~/.config/nvim
@@ -48,8 +48,10 @@ link $DOTFILES/ghostty/config ~/.config/ghostty/config
 link $DOTFILES/ghostty/themes ~/.config/ghostty/themes
 link $DOTFILES/ccstatusline/settings.json ~/.config/ccstatusline/settings.json
 # Keep the active claude-profile (full/lean); only default to full if unmanaged
-# ~/.claude is the work account, ~/.claude-personal the personal one (claude-personal)
-for c in ~/.claude ~/.claude-personal; do
+# ~/.claude is the main profile, ~/.claude-<name> any others (see claude-as in .zshrc)
+for c in ~/.claude ~/.claude-*/; do
+  c="${c%/}"
+  [ -d "$c" ] || continue
   case "$(readlink "$c/settings.json" 2>/dev/null)" in
     "$DOTFILES"/claude/settings*.json) ;;
     *) link $DOTFILES/claude/settings.json "$c/settings.json" ;;

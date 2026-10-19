@@ -164,19 +164,43 @@ notes-edit() {
 # Create or edit a note by filename (tab-completes)
 alias note='nvim ~/notes/'
 
-# Clear skills/plugins before launch when on the lean profile (see claude-profile)
-claude() {
-  claude-profile sync
-  command claude "$@"
-}
-
-# Personal account: isolated config, history, and credentials; strips telemetry/OTEL env vars
-claude-personal() {
+# Claude profiles: one per account/subscription, each with its own login, memory, and history.
+#   CLAUDE_MAIN (set per machine in ~/.zshrc.local) is the profile in ~/.claude, used by `claude`
+#   and IDEs; any other profile lives in ~/.claude-<name>. Launch one with `claude-as <name>`.
+# Every profile uses dotfiles claude/settings.json, plus <profile dir>/settings.overlay.json if
+# present. Non-main profiles also strip telemetry/OTEL env vars and exclude ~/.claude/** so the
+# main profile's CLAUDE.md doesn't load as an ancestor CLAUDE.md. Clears skills/plugins first when
+# on the lean profile (see claude-profile).
+claude-as() {
+  local name=$1
+  if [[ ! $name =~ '^[a-z0-9][a-z0-9-]*$' ]]; then
+    echo "usage: claude-as <profile> [args]  (profile: lowercase letters, digits, -)" >&2
+    return 1
+  fi
+  shift
   (
-    unset CLAUDE_CODE_ENABLE_TELEMETRY ${(k)parameters[(I)OTEL_*]}
-    CLAUDE_CONFIG_DIR=$HOME/.claude-personal command claude "$@"
+    local dir=$HOME/.claude overlay='{}'
+    if [[ $name == ${CLAUDE_MAIN:-default} ]]; then
+      unset CLAUDE_CONFIG_DIR
+    else
+      dir=$HOME/.claude-$name
+      export CLAUDE_CONFIG_DIR=$dir
+      unset CLAUDE_CODE_ENABLE_TELEMETRY ${(k)parameters[(I)OTEL_*]}
+    fi
+    if [[ ! -e $dir/settings.json ]]; then
+      mkdir -p $dir && ln -s $HOME/.dotfiles/claude/settings.json $dir/settings.json
+    fi
+    [[ -f $dir/settings.overlay.json ]] && overlay=$(<$dir/settings.overlay.json)
+    if [[ -n $CLAUDE_CONFIG_DIR ]]; then
+      overlay=$(jq -c --arg ex "$HOME/.claude/**" '.claudeMdExcludes += [$ex]' <<<$overlay) || return 1
+    fi
+    claude-profile sync
+    command claude --settings "$overlay" "$@"
   )
 }
+
+claude() { claude-as "${CLAUDE_MAIN:-default}" "$@" }
+claude-personal() { claude-as personal "$@" }
 
 
 # User configuration
