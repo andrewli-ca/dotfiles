@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# claude-account — print the email of the Claude account the active profile is logged into
+#
+# Reads $CLAUDE_CONFIG_DIR/.claude.json for non-main profiles, else ~/.claude.json
+# (see claude-as in .zshrc). Used by the ccstatusline custom-command widget.
+set -eu
+
+if [ -n "${CLAUDE_CONFIG_DIR:-}" ]; then
+  state="$CLAUDE_CONFIG_DIR/.claude.json"
+else
+  state="$HOME/.claude.json"
+fi
+
+[ -f "$state" ] || exit 0
+jq -r '.oauthAccount.emailAddress // empty' "$state" 2>/dev/null || true
