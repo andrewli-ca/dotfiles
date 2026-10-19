@@ -12,6 +12,7 @@ Personal configuration files for nvim, tmux, zsh, ghostty, and cheat.
 | `.p10k.zsh` | Powerlevel10k prompt config |
 | `ghostty/` | Ghostty terminal config |
 | `bin/` | Personal scripts (on `$PATH` via `.zshrc`) |
+| `claude/` | Claude Code base settings (full and lean) shared by every Claude profile |
 | `cheat-conf.yml` | cheat CLI config |
 | `cheatsheets/personal/` | Personal cheatsheets (synced) |
 | `Brewfile` | All Homebrew dependencies |
@@ -46,7 +47,7 @@ This will:
 - Back up any existing configs to `~/.dotfiles-backup-<timestamp>`
 - Install Oh My Zsh (if not present)
 - Symlink all configs to their correct locations (nvim, tmux, zsh, ghostty config + themes, cheat, ccstatusline)
-- Link Claude Code settings to the full profile, unless a `claude-profile` (full/lean) is already active
+- Link Claude Code base settings into `~/.claude` and any `~/.claude-*` profile folder, unless a `claude-profile` (full/lean) is already active
 - Template the glow config with your home directory path
 - Clone community cheatsheets
 - Template the cheat config with your home directory path
@@ -67,6 +68,18 @@ This will:
 ```bash
 cheat ls
 ```
+
+## Claude profiles
+
+Separate Claude Code accounts (work, personal, extra subscriptions), each with its own login, memory, and history, sharing the base settings in `claude/`.
+
+| Command | What it does |
+|---|---|
+| `claude` | Main profile for this machine (`~/.claude`), set by `CLAUDE_MAIN` in `~/.zshrc.local` |
+| `claude-as <name>` | Any profile; non-main ones live in `~/.claude-<name>` |
+| `claude-personal` | Shortcut for `claude-as personal` |
+
+Full documentation: [docs/claude-profiles.md](docs/claude-profiles.md)
 
 ## Theming
 
