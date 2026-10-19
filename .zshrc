@@ -170,8 +170,13 @@ claude() {
   command claude "$@"
 }
 
-# Personal account: isolated config, history, and credentials
-alias claude-personal='CLAUDE_CONFIG_DIR=$HOME/.claude-personal claude'
+# Personal account: isolated config, history, and credentials; strips telemetry/OTEL env vars
+claude-personal() {
+  (
+    unset CLAUDE_CODE_ENABLE_TELEMETRY ${(k)parameters[(I)OTEL_*]}
+    CLAUDE_CONFIG_DIR=$HOME/.claude-personal command claude "$@"
+  )
+}
 
 
 # User configuration
