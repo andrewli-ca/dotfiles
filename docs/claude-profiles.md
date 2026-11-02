@@ -14,6 +14,7 @@ Run several Claude Code accounts side by side, each fully isolated: its own logi
 | `claude-as <name>` | `.zshrc` | Launch Claude Code as a profile |
 | `claude` | `.zshrc` | Shortcut for `claude-as $CLAUDE_MAIN` |
 | `claude-personal` | `.zshrc` | Shortcut for `claude-as personal` |
+| `chs [profile]` | `.zshrc` + `bin/claude-resume` | Fuzzy-search a profile's past sessions across all projects and resume one (default: `CLAUDE_MAIN`) |
 | `CLAUDE_MAIN` | `~/.zshrc.local` (per machine, not synced) | Which profile lives in `~/.claude` |
 | `claude/settings.json` | this repo | Base settings, symlinked into every profile |
 | `settings.overlay.json` | inside a profile folder (not synced) | Profile-only settings layered on the base |

@@ -202,6 +202,22 @@ claude-as() {
 claude() { claude-as "${CLAUDE_MAIN:-default}" "$@" }
 claude-personal() { claude-as personal "$@" }
 
+# Fuzzy-search a profile's past sessions (all projects) and resume one via claude-as.
+#   chs [--rebuild] [profile]   profile defaults to CLAUDE_MAIN; see bin/claude-resume
+chs() {
+  local rebuild=() name=${CLAUDE_MAIN:-default} pick
+  [[ $1 == --rebuild ]] && { rebuild=(--rebuild); shift }
+  [[ -n $1 ]] && name=$1
+  if [[ $name == ${CLAUDE_MAIN:-default} ]]; then
+    pick=$(CLAUDE_CONFIG_DIR= claude-resume $rebuild) || return
+  else
+    pick=$(CLAUDE_CONFIG_DIR=$HOME/.claude-$name claude-resume $rebuild) || return
+  fi
+  [[ -n $pick ]] || return 0
+  echo "→ ${pick%%$'\t'*}" >&2
+  (cd "${pick%%$'\t'*}" && claude-as $name --resume "${pick#*$'\t'}")
+}
+
 
 # User configuration
 

@@ -79,6 +79,7 @@ Separate Claude Code accounts (work, personal, extra subscriptions), each with i
 | `claude` | Main profile for this machine (`~/.claude`), set by `CLAUDE_MAIN` in `~/.zshrc.local` |
 | `claude-as <name>` | Any profile; non-main ones live in `~/.claude-<name>` |
 | `claude-personal` | Shortcut for `claude-as personal` |
+| `chs [profile]` | Fuzzy-search and resume past sessions of a profile (default: main) |
 
 Full documentation: [docs/claude-profiles.md](docs/claude-profiles.md)
 

@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
-# chs — fuzzy-search and resume Claude Code sessions
+# claude-resume — fuzzy-search Claude Code sessions; prints "CWD<TAB>SID" of the pick
+#   Used by the chs function in .zshrc, which resumes the pick via claude-as.
+#   Searches $CLAUDE_CONFIG_DIR/projects if set (e.g. ~/.claude-personal), else ~/.claude.
+#   --rebuild: reindex from scratch
 set -eu
 
-INDEX="${XDG_CACHE_HOME:-$HOME/.cache}/claude-history.tsv"
+CLAUDE="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+PROJECTS="$CLAUDE/projects"
+# One index per profile: claude-history.tsv for ~/.claude, claude-history-<name>.tsv otherwise
+INDEX="${XDG_CACHE_HOME:-$HOME/.cache}/claude-history${CLAUDE##*/.claude}.tsv"
 mkdir -p "$(dirname "$INDEX")"
 
 # Build a row for a single session file: WHEN<TAB>CWD<TAB>SID<TAB>PREVIEW
@@ -29,11 +35,11 @@ if [ "${1:-}" = "--rebuild" ] || [ ! -f "$INDEX" ]; then
   # Full rebuild: missing cache or explicit request
   echo "indexing claude history (full)..." >&2
   while IFS= read -r f; do build_row "$f"; done \
-    < <(find "$HOME/.claude/projects" -name "*.jsonl" -type f) \
+    < <(find "$PROJECTS" -name "*.jsonl" -type f) \
     | sort -r > "$INDEX"
 else
   # Incremental: re-index only files modified since cache mtime
-  changed=$(find "$HOME/.claude/projects" -name "*.jsonl" -type f -newer "$INDEX")
+  changed=$(find "$PROJECTS" -name "*.jsonl" -type f -newer "$INDEX")
   if [ -n "$changed" ]; then
     n_changed=$(printf '%s\n' "$changed" | wc -l | tr -d ' ')
     echo "updating index ($n_changed changed)..." >&2
@@ -61,7 +67,7 @@ pick=$(awk -F'\t' '{
         --header="enter=resume  esc=quit  ctrl-r=refresh  ?=toggle-preview  ($(wc -l < "$INDEX" | tr -d ' ') sessions)" \
         --bind "ctrl-r:reload(awk -F'\t' '{cwd=\$2; if(length(cwd)>45) cwd=\"…\" substr(cwd, length(cwd)-43); printf \"%-16s  %-45s  %s\t%s\t%s\n\", \$1, cwd, \$4, \$3, \$2}' '$INDEX')" \
         --bind "?:toggle-preview" \
-        --preview="f=\$(echo $HOME/.claude/projects/*/{2}.jsonl 2>/dev/null); [ -f \"\$f\" ] && jq -r 'select(.type==\"user\" and (.message.content|type==\"string\")) | \"=== \" + (.timestamp // \"?\") + \" ===\\n\" + .message.content + \"\\n\"' \"\$f\" 2>/dev/null | head -200 || echo 'no preview'" \
+        --preview="f=\$(echo $PROJECTS/*/{2}.jsonl 2>/dev/null); [ -f \"\$f\" ] && jq -r 'select(.type==\"user\" and (.message.content|type==\"string\")) | \"=== \" + (.timestamp // \"?\") + \" ===\\n\" + .message.content + \"\\n\"' \"\$f\" 2>/dev/null | head -200 || echo 'no preview'" \
         --preview-window=down:60%:wrap:border-top) || exit 0
 
 sid=$(printf '%s' "$pick" | cut -f2)
@@ -73,7 +79,4 @@ if [ ! -d "$cwd" ]; then
   exit 1
 fi
 
-cd "$cwd"
-echo "→ $cwd" >&2
-claude-profile sync
-exec claude --resume "$sid"
+printf '%s\t%s\n' "$cwd" "$sid"
