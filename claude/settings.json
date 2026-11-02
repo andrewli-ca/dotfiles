@@ -16,11 +16,7 @@
     "command": "npx ccstatusline@latest"
   },
   "enabledPlugins": {
-    "frontend-design@claude-plugins-official": false,
-    "superpowers@claude-plugins-official": false,
-    "skill-creator@claude-plugins-official": false,
-    "chrome-devtools-mcp@claude-plugins-official": true,
-    "mattpocock-skills@claude-plugins-official": false
+    "chrome-devtools-mcp@claude-plugins-official": true
   },
   "effortLevel": "high",
   "tui": "fullscreen",
