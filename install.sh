@@ -82,6 +82,8 @@ fi
 
 echo "→ Installing CLI tools via Homebrew..."
 if command -v brew &> /dev/null; then
+  # Homebrew refuses to load formulae from third-party taps until they're trusted
+  brew trust --formula cormacrelf/tap/dark-notify 2>/dev/null || true
   brew bundle --file="$DOTFILES/Brewfile"
   # Symlink brew-installed zsh plugins into oh-my-zsh custom directory
   ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
